@@ -1,0 +1,152 @@
+# ===========================================================================
+# .editorconfig — SB.GestionPagos
+#
+# Traduce a reglas verificables por el compilador las 11 normas de nomenclatura
+# de "API - ESPECIFICACIONES TECNICAS.pdf" (pág. 4).
+#
+# Con <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild> en Directory.Build.props,
+# cada violación aparece como advertencia IDE1006 en `dotnet build`, no solo en el IDE.
+#
+# IMPORTANTE: las reglas de nomenclatura se evalúan EN ORDEN y gana la primera que
+# coincide. Por eso las más específicas (interfaces, constantes) van antes que las
+# generales (tipos, campos).
+# ===========================================================================
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = space
+
+[*.{cs,csx}]
+indent_size = 4
+max_line_length = 120
+
+[*.{csproj,props,targets,config,xml}]
+indent_size = 2
+
+[*.{js,jsx,ts,tsx,json,jsonc,css,scss,html,yml,yaml}]
+indent_size = 2
+
+[*.md]
+trim_trailing_whitespace = false
+
+# ===========================================================================
+# C# — NOMENCLATURA (norma de SB)
+# ===========================================================================
+[*.cs]
+
+# El analizador de nomenclatura es IDE1006, y viene APAGADO en compilación.
+# Verificado en este proyecto: sin esta línea, `dotnet build` reporta 0 advertencias
+# aunque cada regla de abajo declare `severity = warning`. La severidad de la regla
+# describe la violación individual; esta línea enciende el analizador que las emite.
+dotnet_diagnostic.IDE1006.severity = warning
+
+# ---------------------------------------------------------------------------
+# Estilos de capitalización disponibles
+# ---------------------------------------------------------------------------
+dotnet_naming_style.pascal_case.capitalization = pascal_case
+
+dotnet_naming_style.camel_case.capitalization = camel_case
+
+# Norma 5: las interfaces llevan prefijo "I"  ->  IRepositorioEmpleado
+dotnet_naming_style.pascal_case_con_prefijo_i.capitalization = pascal_case
+dotnet_naming_style.pascal_case_con_prefijo_i.required_prefix = I
+
+# Norma 7: constantes en MAYUSCULA_CON_GUION_BAJO  ->  HORAS_SEMANALES_ESTANDAR
+# (decisión consciente: contradice la convención de Microsoft para `const`,
+#  pero el documento de SB es lo que se evalúa. Documentado en el README.)
+dotnet_naming_style.mayuscula_con_guion_bajo.capitalization = all_upper
+dotnet_naming_style.mayuscula_con_guion_bajo.word_separator = _
+
+# Campos privados de instancia: _camelCase.
+# El documento de SB no legisla este caso (solo habla de variables locales y
+# parámetros); se adopta la convención estándar de .NET para distinguir de un vistazo
+# el estado del objeto de una variable local.
+dotnet_naming_style.guion_bajo_camel_case.capitalization = camel_case
+dotnet_naming_style.guion_bajo_camel_case.required_prefix = _
+
+# ---------------------------------------------------------------------------
+# Grupos de símbolos
+# ---------------------------------------------------------------------------
+dotnet_naming_symbols.interfaces.applicable_kinds = interface
+dotnet_naming_symbols.interfaces.applicable_accessibilities = *
+
+dotnet_naming_symbols.constantes.applicable_kinds = field, local
+dotnet_naming_symbols.constantes.applicable_accessibilities = *
+dotnet_naming_symbols.constantes.required_modifiers = const
+
+dotnet_naming_symbols.tipos.applicable_kinds = class, struct, enum, delegate
+dotnet_naming_symbols.tipos.applicable_accessibilities = *
+
+dotnet_naming_symbols.miembros_publicos.applicable_kinds = property, method, event, namespace
+dotnet_naming_symbols.miembros_publicos.applicable_accessibilities = *
+
+dotnet_naming_symbols.campos_privados.applicable_kinds = field
+dotnet_naming_symbols.campos_privados.applicable_accessibilities = private, protected, private_protected
+
+dotnet_naming_symbols.parametros_y_locales.applicable_kinds = parameter, local, local_function
+dotnet_naming_symbols.parametros_y_locales.applicable_accessibilities = *
+
+# ---------------------------------------------------------------------------
+# Reglas (el orden importa: de la más específica a la más general)
+# ---------------------------------------------------------------------------
+dotnet_naming_rule.interfaces_con_prefijo_i.symbols = interfaces
+dotnet_naming_rule.interfaces_con_prefijo_i.style = pascal_case_con_prefijo_i
+dotnet_naming_rule.interfaces_con_prefijo_i.severity = warning
+
+dotnet_naming_rule.constantes_en_mayuscula.symbols = constantes
+dotnet_naming_rule.constantes_en_mayuscula.style = mayuscula_con_guion_bajo
+dotnet_naming_rule.constantes_en_mayuscula.severity = warning
+
+dotnet_naming_rule.tipos_en_pascal_case.symbols = tipos
+dotnet_naming_rule.tipos_en_pascal_case.style = pascal_case
+dotnet_naming_rule.tipos_en_pascal_case.severity = warning
+
+dotnet_naming_rule.miembros_en_pascal_case.symbols = miembros_publicos
+dotnet_naming_rule.miembros_en_pascal_case.style = pascal_case
+dotnet_naming_rule.miembros_en_pascal_case.severity = warning
+
+dotnet_naming_rule.campos_privados_con_guion_bajo.symbols = campos_privados
+dotnet_naming_rule.campos_privados_con_guion_bajo.style = guion_bajo_camel_case
+dotnet_naming_rule.campos_privados_con_guion_bajo.severity = warning
+
+dotnet_naming_rule.parametros_y_locales_en_camel_case.symbols = parametros_y_locales
+dotnet_naming_rule.parametros_y_locales_en_camel_case.style = camel_case
+dotnet_naming_rule.parametros_y_locales_en_camel_case.severity = warning
+
+# ===========================================================================
+# C# — ESTILO
+# ===========================================================================
+
+# Los campos que no cambian tras el constructor deben declararse readonly.
+dotnet_style_readonly_field = true:warning
+
+# `var` solo cuando el tipo ya se lee en la misma línea. Fuera de ahí, el tipo
+# explícito documenta el código para quien lo revisa sin un IDE encima.
+csharp_style_var_when_type_is_apparent = true:suggestion
+csharp_style_var_for_built_in_types = false:suggestion
+csharp_style_var_elsewhere = false:suggestion
+
+# Llaves siempre, incluso en un `if` de una línea: evita la clase de bug que se cuela
+# al agregar una segunda instrucción y olvidar abrir el bloque.
+csharp_prefer_braces = true:warning
+
+csharp_style_namespace_declarations = file_scoped:warning
+csharp_style_expression_bodied_methods = when_on_single_line:suggestion
+csharp_style_expression_bodied_properties = true:suggestion
+
+dotnet_style_require_accessibility_modifiers = for_non_interface_members:warning
+dotnet_style_qualification_for_field = false:suggestion
+dotnet_style_qualification_for_property = false:suggestion
+dotnet_style_qualification_for_method = false:suggestion
+
+# Orden de los `using`: System primero y fuera del namespace.
+dotnet_sort_system_directives_first = true
+csharp_using_directive_placement = outside_namespace:warning
+
+# Detecta `using` sobrantes: en este proyecto son la señal temprana de que una capa
+# empezó a depender de otra que no le corresponde.
+dotnet_diagnostic.IDE0005.severity = warning

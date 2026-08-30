@@ -1,0 +1,67 @@
+# ---------------------------------------------------------------------------
+# .NET
+# ---------------------------------------------------------------------------
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
+[Rr]elease/
+[Ll]og/
+[Ll]ogs/
+*.log
+
+# Resultados de pruebas y cobertura
+[Tt]est[Rr]esult*/
+*.coverage
+*.trx
+coverage*.json
+coverage*.xml
+coverage*.info
+
+# Artefactos de Visual Studio / Rider / VS Code
+.vs/
+.vscode/
+.idea/
+*.user
+*.suo
+*.userprefs
+*.DotSettings.user
+
+# NuGet
+*.nupkg
+packages/
+.nuget/
+
+# ---------------------------------------------------------------------------
+# Secretos y configuración local
+# El appsettings.json versionado lleva un placeholder; la cadena de conexión real
+# (con contraseña) vive solo en appsettings.Development.json, que NO se sube.
+# El README documenta cómo crearlo.
+# ---------------------------------------------------------------------------
+appsettings.Development.json
+appsettings.*.Local.json
+*.pfx
+.env
+.env.*
+!.env.example
+
+# ---------------------------------------------------------------------------
+# Node / React / Vite
+# ---------------------------------------------------------------------------
+node_modules/
+dist/
+dist-ssr/
+build/
+.vite/
+*.local
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.eslintcache
+
+# ---------------------------------------------------------------------------
+# Sistema operativo
+# ---------------------------------------------------------------------------
+.DS_Store
+Thumbs.db
+*~

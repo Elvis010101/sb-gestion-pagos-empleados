@@ -1,0 +1,36 @@
+<Project>
+
+  <!-- Propiedades comunes a TODOS los proyectos de la solución.
+       MSBuild importa este archivo automáticamente en cada .csproj que esté por debajo
+       de esta carpeta, antes de evaluar el proyecto. Centralizar aquí evita que las seis
+       capas se desincronicen (por ejemplo, que una quede en net7.0 sin que nadie lo note). -->
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <LangVersion>12.0</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+
+    <!-- Por ahora en false, según lo acordado: las violaciones de nomenclatura se ven,
+         pero no rompen la compilación mientras el proyecto está en construcción. -->
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+
+    <!-- Sin esto, las reglas de nomenclatura del .editorconfig solo las vería el IDE.
+         Al activarlo, `dotnet build` también las evalúa: la norma de SB se verifica
+         en la línea de comandos y, más adelante, en cualquier pipeline. -->
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+
+    <!-- Requisito técnico de IDE0005 (usings sin usar): el analizador solo corre en
+         compilación si se genera el archivo de documentación XML. De paso, el XML del
+         proyecto Api es lo que Swagger usará luego para describir los endpoints. -->
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+
+    <!-- CS1591 = "falta comentario XML en un miembro público". Se silencia a propósito:
+         la documentación XML se escribe donde aporta (fórmulas del Dominio, contratos
+         públicos de la Api), no en cada propiedad de cada DTO. -->
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
+
+    <!-- Los proyectos de la solución no se publican como paquetes NuGet. -->
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+</Project>
