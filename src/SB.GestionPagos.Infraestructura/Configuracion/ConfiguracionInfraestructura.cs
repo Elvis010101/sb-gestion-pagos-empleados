@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SB.GestionPagos.Dominio.Repositorios;
+using SB.GestionPagos.Infraestructura.DatosPlanos;
 using SB.GestionPagos.Infraestructura.Persistencia;
 using SB.GestionPagos.Infraestructura.Persistencia.Repositorios;
 
@@ -59,6 +60,40 @@ public static class ConfiguracionInfraestructura
         servicios.AddScoped<IEmpleadoRepositorio, EmpleadoRepositorioSql>();
         servicios.AddScoped<IUsuarioRepositorio, UsuarioRepositorioSql>();
 
+        AgregarAlmacenamientoEnArchivoPlano(servicios, configuracion);
+
         return servicios;
+    }
+
+    /// <summary>
+    /// Registra el catálogo de entidades gubernamentales, respaldado por un archivo de texto
+    /// plano en lugar de SQL Server.
+    /// </summary>
+    /// <remarks>
+    /// Estas dos líneas son toda la diferencia entre los dos almacenes del sistema. La capa
+    /// Servicios recibe <see cref="IEntidadGubernamentalRepositorio"/> exactamente igual que
+    /// recibe <see cref="IEmpleadoRepositorio"/>, y no tiene forma de distinguir que detrás de
+    /// una hay un motor relacional y detrás de la otra un archivo de 188 líneas. Migrar este
+    /// catálogo a SQL Server el día de mañana es cambiar el tipo de la derecha.
+    /// </remarks>
+    private static void AgregarAlmacenamientoEnArchivoPlano(
+        IServiceCollection servicios,
+        IConfiguration configuracion)
+    {
+        // La ruta se lee de la configuración, con la ruta de salida del build por omisión.
+        // Misma norma que la cadena de conexión: en código va el nombre de la clave, no el valor.
+        servicios.AddSingleton(new OpcionesArchivoEntidadesGubernamentales(
+            configuracion[OpcionesArchivoEntidadesGubernamentales.CLAVE_CONFIGURACION]));
+
+        // Singleton, y no Scoped como los repositorios de EF Core. No es una inconsistencia:
+        // es lo que la implementación exige. El semáforo que serializa las escrituras y el
+        // caché del archivo solo sirven si TODAS las peticiones comparten la misma instancia.
+        // Registrado como Scoped, cada petición traería su propio semáforo, cada semáforo
+        // estaría libre, y dos altas simultáneas escribirían el archivo a la vez.
+        //
+        // Ser Singleton es seguro aquí precisamente porque la clase está diseñada para ello:
+        // su estado mutable está protegido por el semáforo. El repositorio de SQL Server no
+        // podría serlo, porque envuelve un DbContext, que no es seguro para uso concurrente.
+        servicios.AddSingleton<IEntidadGubernamentalRepositorio, EntidadGubernamentalRepositorioArchivo>();
     }
 }

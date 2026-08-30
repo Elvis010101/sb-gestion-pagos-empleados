@@ -15,6 +15,18 @@ public interface IEntidadGubernamentalRepositorio
 
     Task<EntidadGubernamental?> ObtenerPorIdAsync(int identificador, CancellationToken cancelacion);
 
+    /// <summary>
+    /// Devuelve las entidades que satisfacen el filtro, ordenadas por nombre.
+    /// </summary>
+    /// <remarks>
+    /// No pagina, a diferencia de la búsqueda de empleados: el catálogo tiene 181 registros y
+    /// la implementación de archivo plano los tiene todos en memoria de todas formas. Paginar
+    /// aquí sería maquinaria sin ganancia.
+    /// </remarks>
+    Task<IReadOnlyList<EntidadGubernamental>> BuscarAsync(
+        FiltroBusquedaEntidadGubernamental filtro,
+        CancellationToken cancelacion);
+
     Task AgregarAsync(EntidadGubernamental entidadGubernamental, CancellationToken cancelacion);
 
     Task ActualizarAsync(EntidadGubernamental entidadGubernamental, CancellationToken cancelacion);

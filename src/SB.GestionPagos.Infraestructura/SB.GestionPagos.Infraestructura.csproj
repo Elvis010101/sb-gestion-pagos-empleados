@@ -1,6 +1,17 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
+    <!-- El almacén del módulo de entidades gubernamentales. Va como <Content> y no como
+         recurso incrustado porque tiene que existir como ARCHIVO en disco: la aplicación no
+         solo lo lee, también lo reescribe en cada alta, edición o baja.
+         PreserveNewest y no Always: si fuera Always, cada rebuild pisaría el archivo de la
+         salida con la copia del repositorio y borraría los cambios hechos en ejecución. -->
+    <Content Include="DatosPlanos\entidades-gubernamentales.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\SB.GestionPagos.Dominio\SB.GestionPagos.Dominio.csproj" />
     <ProjectReference Include="..\SB.GestionPagos.Aplicacion\SB.GestionPagos.Aplicacion.csproj" />
   </ItemGroup>

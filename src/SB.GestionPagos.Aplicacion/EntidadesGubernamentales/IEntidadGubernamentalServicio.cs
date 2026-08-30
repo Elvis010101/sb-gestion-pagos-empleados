@@ -18,6 +18,10 @@ public interface IEntidadGubernamentalServicio
 
     Task<Resultado<EntidadGubernamentalDto>> ObtenerPorIdAsync(int identificador, CancellationToken cancelacion);
 
+    Task<Resultado<IReadOnlyList<EntidadGubernamentalDto>>> BuscarAsync(
+        FiltroEntidadesGubernamentales filtro,
+        CancellationToken cancelacion);
+
     Task<Resultado<EntidadGubernamentalDto>> CrearAsync(
         CrearEntidadGubernamentalDto solicitud,
         CancellationToken cancelacion);

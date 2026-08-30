@@ -41,13 +41,30 @@ public sealed class EntidadGubernamentalServicio : IEntidadGubernamentalServicio
         IReadOnlyList<EntidadGubernamental> entidades =
             await _entidadGubernamentalRepositorio.ObtenerTodasAsync(cancelacion);
 
-        List<EntidadGubernamentalDto> respuesta = new(entidades.Count);
-        foreach (EntidadGubernamental entidad in entidades)
-        {
-            respuesta.Add(MapeadorEntidadGubernamental.ADto(entidad));
-        }
+        return Resultado<IReadOnlyList<EntidadGubernamentalDto>>.Exitoso(ADtos(entidades));
+    }
 
-        return Resultado<IReadOnlyList<EntidadGubernamentalDto>>.Exitoso(respuesta);
+    public async Task<Resultado<IReadOnlyList<EntidadGubernamentalDto>>> BuscarAsync(
+        FiltroEntidadesGubernamentales filtro,
+        CancellationToken cancelacion)
+    {
+        // El DTO que llega de la Api y el filtro que entiende el Dominio son dos tipos
+        // distintos aunque hoy tengan los mismos campos. El primero es el contrato con el
+        // mundo exterior; el segundo, el contrato con el repositorio. Traducirlos aquí es lo
+        // que permite renombrar un parámetro de la cadena de consulta sin tocar el Dominio.
+        FiltroBusquedaEntidadGubernamental filtroDominio = new(filtro.Nombre, filtro.Sector);
+
+        IReadOnlyList<EntidadGubernamental> entidades =
+            await _entidadGubernamentalRepositorio.BuscarAsync(filtroDominio, cancelacion);
+
+        _registrador.LogInformation(
+            "Búsqueda de entidades gubernamentales. Nombre: {NombreBuscado}. Sector: {SectorBuscado}. "
+            + "Coincidencias: {TotalCoincidencias}.",
+            filtro.Nombre,
+            filtro.Sector,
+            entidades.Count);
+
+        return Resultado<IReadOnlyList<EntidadGubernamentalDto>>.Exitoso(ADtos(entidades));
     }
 
     public async Task<Resultado<EntidadGubernamentalDto>> ObtenerPorIdAsync(
@@ -134,6 +151,17 @@ public sealed class EntidadGubernamentalServicio : IEntidadGubernamentalServicio
             entidad.Nombre);
 
         return Resultado.Exitoso();
+    }
+
+    private static IReadOnlyList<EntidadGubernamentalDto> ADtos(IReadOnlyList<EntidadGubernamental> entidades)
+    {
+        List<EntidadGubernamentalDto> respuesta = new(entidades.Count);
+        foreach (EntidadGubernamental entidad in entidades)
+        {
+            respuesta.Add(MapeadorEntidadGubernamental.ADto(entidad));
+        }
+
+        return respuesta;
     }
 
     private static string NoEncontrada(int identificador)
