@@ -17,4 +17,4 @@ public sealed record ActualizarEmpleadoAsalariadoDto(
     string NumeroSeguroSocial,
     string Departamento,
     EstadoEmpleado Estado,
-    decimal SalarioSemanal);
+    decimal SalarioSemanal) : ISolicitudActualizacionEmpleado;

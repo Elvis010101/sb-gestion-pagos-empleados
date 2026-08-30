@@ -38,9 +38,31 @@ public interface IEmpleadoRepositorio
     /// </remarks>
     Task<IReadOnlyList<Empleado>> ListarAsync(FiltroBusquedaEmpleado filtro, CancellationToken cancelacion);
 
+    /// <summary>
+    /// Indica si ya hay un empleado registrado con ese número de seguro social.
+    /// </summary>
+    /// <param name="numeroSeguroSocial">El número a buscar.</param>
+    /// <param name="identificadorExcluido">
+    /// Empleado que no debe contarse. Al editar, el propio empleado ya tiene ese número y
+    /// no debe chocar consigo mismo. Es nulo al dar de alta.
+    /// </param>
+    /// <param name="cancelacion">Testigo de cancelación de la operación.</param>
+    /// <remarks>
+    /// La pregunta se le hace al repositorio y no se resuelve trayendo la lista completa
+    /// para recorrerla: quien puede responderla en una sola operación indexada es el motor.
+    /// </remarks>
+    Task<bool> ExisteNumeroSeguroSocialAsync(
+        string numeroSeguroSocial,
+        int? identificadorExcluido,
+        CancellationToken cancelacion);
+
     Task AgregarAsync(Empleado empleado, CancellationToken cancelacion);
 
     Task ActualizarAsync(Empleado empleado, CancellationToken cancelacion);
 
-    Task EliminarAsync(Empleado empleado, CancellationToken cancelacion);
+    // No hay borrado físico de empleados, y su ausencia es deliberada. La baja es lógica:
+    // se cambia el estado a Inactivo con ActualizarAsync. Un pago liquidado tiene que poder
+    // rastrearse hasta la persona a la que se le pagó, y una fila borrada rompe esa cadena.
+    // Si el contrato ofreciera EliminarAsync, la baja lógica sería una convención que
+    // cualquiera podría saltarse por descuido; al no ofrecerlo, no hay forma de saltársela.
 }

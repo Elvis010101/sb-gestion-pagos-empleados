@@ -10,4 +10,4 @@ public sealed record ActualizarEmpleadoPorComisionDto(
     string Departamento,
     EstadoEmpleado Estado,
     decimal VentasBrutas,
-    decimal TarifaComision);
+    decimal TarifaComision) : ISolicitudActualizacionEmpleado;

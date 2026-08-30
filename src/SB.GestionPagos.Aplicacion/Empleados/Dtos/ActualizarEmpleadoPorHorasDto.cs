@@ -10,4 +10,4 @@ public sealed record ActualizarEmpleadoPorHorasDto(
     string Departamento,
     EstadoEmpleado Estado,
     decimal SueldoPorHora,
-    decimal HorasTrabajadas);
+    decimal HorasTrabajadas) : ISolicitudActualizacionEmpleado;

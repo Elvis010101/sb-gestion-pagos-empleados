@@ -11,4 +11,4 @@ public sealed record ActualizarEmpleadoAsalariadoPorComisionDto(
     EstadoEmpleado Estado,
     decimal VentasBrutas,
     decimal TarifaComision,
-    decimal SalarioBase);
+    decimal SalarioBase) : ISolicitudActualizacionEmpleado;
