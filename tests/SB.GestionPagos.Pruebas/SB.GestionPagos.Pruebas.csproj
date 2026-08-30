@@ -11,12 +11,29 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+
+    <!-- FluentAssertions solo cambia CÓMO se escribe la aserción, no qué se verifica.
+         Su ganancia real es el mensaje de fallo: Assert.Equal informa "esperado 830,
+         recibido 820"; FluentAssertions informa además el nombre de la expresion que
+         falló. En una prueba tecnica que se defiende leyendo la salida, eso importa. -->
+    <PackageReference Include="FluentAssertions" Version="6.12.0" />
+
+    <!-- NSubstitute genera implementaciones falsas de IEmpleadoRepositorio en tiempo de
+         ejecucion. Es lo que permite probar la capa Servicios sin SQL Server encendido. -->
+    <PackageReference Include="NSubstitute" Version="5.1.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\SB.GestionPagos.Dominio\SB.GestionPagos.Dominio.csproj" />
     <ProjectReference Include="..\..\src\SB.GestionPagos.Aplicacion\SB.GestionPagos.Aplicacion.csproj" />
     <ProjectReference Include="..\..\src\SB.GestionPagos.Servicios\SB.GestionPagos.Servicios.csproj" />
+
+    <!-- NO se referencia SB.GestionPagos.Infraestructura, y es una decision, no un olvido:
+         estas son pruebas UNITARIAS. Si el proyecto de pruebas pudiera ver EF Core o el
+         repositorio de archivo plano, tarde o temprano alguien escribiria un test que
+         necesita el contenedor de SQL Server encendido para pasar. Al no referenciarla,
+         eso no es posible. Microsoft.Extensions.Logging.Abstractions (de donde sale
+         NullLogger<T>) llega de forma transitiva desde SB.GestionPagos.Servicios. -->
   </ItemGroup>
 
 </Project>
