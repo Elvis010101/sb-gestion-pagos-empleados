@@ -16,7 +16,10 @@ public sealed class EmpleadoAsalariado : Empleado
         decimal salarioSemanal)
         : base(primerNombre, apellidoPaterno, numeroSeguroSocial, departamento)
     {
-        SalarioSemanal = ValidacionDominio.NoNegativo(salarioSemanal, nameof(SalarioSemanal));
+        // El alta delega en la edición para que las reglas del contrato se escriban una
+        // sola vez, igual que la clase base ya hace con los datos personales. La clase es
+        // sealed: no hay despacho virtual hacia una subclase a medio construir.
+        ActualizarDatosDeContrato(salarioSemanal);
     }
 
     public decimal SalarioSemanal { get; private set; }

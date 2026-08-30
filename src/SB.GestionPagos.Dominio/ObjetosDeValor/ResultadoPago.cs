@@ -19,9 +19,12 @@ public sealed class ResultadoPago
             throw new ExcepcionValorRequerido(nameof(Lineas));
         }
 
-        // Se copia a una vista de solo lectura para que quien haya construido el arreglo
-        // no pueda seguir modificando el desglose después de crear el resultado.
-        Lineas = Array.AsReadOnly(lineas);
+        // Se COPIA el arreglo y luego se envuelve. Array.AsReadOnly por sí solo no copia
+        // nada: devuelve una vista sobre el MISMO arreglo, de modo que quien conserve la
+        // referencia original podría seguir alterando el desglose de un resultado ya
+        // construido. Con la sintaxis params el arreglo lo crea el compilador y nadie más lo
+        // referencia, pero la garantía no puede depender de cómo se invoque el constructor.
+        Lineas = Array.AsReadOnly(lineas.ToArray());
     }
 
     public IReadOnlyList<LineaCalculo> Lineas { get; }

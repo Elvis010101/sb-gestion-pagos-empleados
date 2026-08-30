@@ -25,13 +25,9 @@ public sealed class EmpleadoAsalariadoPorComision : Empleado
         decimal salarioBase)
         : base(primerNombre, apellidoPaterno, numeroSeguroSocial, departamento)
     {
-        VentasBrutas = ValidacionDominio.NoNegativo(ventasBrutas, nameof(VentasBrutas));
-        TarifaComision = ValidacionDominio.EnRangoInclusivo(
-            tarifaComision,
-            TARIFA_COMISION_MINIMA,
-            TARIFA_COMISION_MAXIMA,
-            nameof(TarifaComision));
-        SalarioBase = ValidacionDominio.NoNegativo(salarioBase, nameof(SalarioBase));
+        // El alta delega en la edición: una sola redacción de las reglas del contrato.
+        // La clase es sealed, así que no hay despacho virtual hacia una subclase.
+        ActualizarDatosDeContrato(ventasBrutas, tarifaComision, salarioBase);
     }
 
     public decimal VentasBrutas { get; private set; }
@@ -55,14 +51,26 @@ public sealed class EmpleadoAsalariadoPorComision : Empleado
                 "Bonificación sobre el salario base",
                 SalarioBase * PORCENTAJE_BONIFICACION_SALARIO_BASE));
 
+    /// <summary>
+    /// Aplica los datos del contrato. O se aplican todos, o no se aplica ninguno.
+    /// </summary>
+    /// <remarks>
+    /// Es el tipo con más margen para dejar basura si se validara y asignara campo por campo:
+    /// un salario base negativo llegaría después de haber pisado ya las ventas y la comisión.
+    /// </remarks>
     public void ActualizarDatosDeContrato(decimal ventasBrutas, decimal tarifaComision, decimal salarioBase)
     {
-        VentasBrutas = ValidacionDominio.NoNegativo(ventasBrutas, nameof(VentasBrutas));
-        TarifaComision = ValidacionDominio.EnRangoInclusivo(
+        decimal ventasBrutasValidadas =
+            ValidacionDominio.NoNegativo(ventasBrutas, nameof(VentasBrutas));
+        decimal tarifaComisionValidada = ValidacionDominio.EnRangoInclusivo(
             tarifaComision,
             TARIFA_COMISION_MINIMA,
             TARIFA_COMISION_MAXIMA,
             nameof(TarifaComision));
-        SalarioBase = ValidacionDominio.NoNegativo(salarioBase, nameof(SalarioBase));
+        decimal salarioBaseValidado = ValidacionDominio.NoNegativo(salarioBase, nameof(SalarioBase));
+
+        VentasBrutas = ventasBrutasValidadas;
+        TarifaComision = tarifaComisionValidada;
+        SalarioBase = salarioBaseValidado;
     }
 }

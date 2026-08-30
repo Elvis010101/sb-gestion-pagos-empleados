@@ -101,9 +101,22 @@ public abstract class Empleado
         string numeroSeguroSocial,
         string departamento)
     {
-        PrimerNombre = ValidacionDominio.TextoRequerido(primerNombre, nameof(PrimerNombre));
-        ApellidoPaterno = ValidacionDominio.TextoRequerido(apellidoPaterno, nameof(ApellidoPaterno));
-        NumeroSeguroSocial = ValidacionDominio.TextoRequerido(numeroSeguroSocial, nameof(NumeroSeguroSocial));
-        Departamento = ValidacionDominio.TextoRequerido(departamento, nameof(Departamento));
+        // Se valida TODO antes de asignar NADA. Si se validara y asignara campo por campo,
+        // un departamento vacío dejaría al empleado con el nombre nuevo y el departamento
+        // viejo: un estado que nadie pidió y que el llamador no sabe que existe, porque solo
+        // ve la excepción. La edición es atómica: surte efecto entera o no surte ninguno.
+        string primerNombreValidado =
+            ValidacionDominio.TextoRequerido(primerNombre, nameof(PrimerNombre));
+        string apellidoPaternoValidado =
+            ValidacionDominio.TextoRequerido(apellidoPaterno, nameof(ApellidoPaterno));
+        string numeroSeguroSocialValidado =
+            ValidacionDominio.TextoRequerido(numeroSeguroSocial, nameof(NumeroSeguroSocial));
+        string departamentoValidado =
+            ValidacionDominio.TextoRequerido(departamento, nameof(Departamento));
+
+        PrimerNombre = primerNombreValidado;
+        ApellidoPaterno = apellidoPaternoValidado;
+        NumeroSeguroSocial = numeroSeguroSocialValidado;
+        Departamento = departamentoValidado;
     }
 }

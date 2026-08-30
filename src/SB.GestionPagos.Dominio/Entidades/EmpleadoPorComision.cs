@@ -23,12 +23,9 @@ public sealed class EmpleadoPorComision : Empleado
         decimal tarifaComision)
         : base(primerNombre, apellidoPaterno, numeroSeguroSocial, departamento)
     {
-        VentasBrutas = ValidacionDominio.NoNegativo(ventasBrutas, nameof(VentasBrutas));
-        TarifaComision = ValidacionDominio.EnRangoInclusivo(
-            tarifaComision,
-            TARIFA_COMISION_MINIMA,
-            TARIFA_COMISION_MAXIMA,
-            nameof(TarifaComision));
+        // El alta delega en la edición: una sola redacción de las reglas del contrato.
+        // La clase es sealed, así que no hay despacho virtual hacia una subclase.
+        ActualizarDatosDeContrato(ventasBrutas, tarifaComision);
     }
 
     public decimal VentasBrutas { get; private set; }
@@ -46,13 +43,22 @@ public sealed class EmpleadoPorComision : Empleado
     public override ResultadoPago CalcularDesglosePagoSemanal()
         => new(new LineaCalculo("Comisión sobre ventas brutas", VentasBrutas * TarifaComision));
 
+    /// <summary>
+    /// Aplica los datos del contrato. O se aplican todos, o no se aplica ninguno.
+    /// </summary>
     public void ActualizarDatosDeContrato(decimal ventasBrutas, decimal tarifaComision)
     {
-        VentasBrutas = ValidacionDominio.NoNegativo(ventasBrutas, nameof(VentasBrutas));
-        TarifaComision = ValidacionDominio.EnRangoInclusivo(
+        // Validar todo antes de asignar nada: una tarifa fuera de rango no debe dejar al
+        // empleado con las ventas nuevas y la comisión vieja.
+        decimal ventasBrutasValidadas =
+            ValidacionDominio.NoNegativo(ventasBrutas, nameof(VentasBrutas));
+        decimal tarifaComisionValidada = ValidacionDominio.EnRangoInclusivo(
             tarifaComision,
             TARIFA_COMISION_MINIMA,
             TARIFA_COMISION_MAXIMA,
             nameof(TarifaComision));
+
+        VentasBrutas = ventasBrutasValidadas;
+        TarifaComision = tarifaComisionValidada;
     }
 }

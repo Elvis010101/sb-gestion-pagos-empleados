@@ -29,12 +29,9 @@ public sealed class EmpleadoPorHoras : Empleado
         decimal horasTrabajadas)
         : base(primerNombre, apellidoPaterno, numeroSeguroSocial, departamento)
     {
-        SueldoPorHora = ValidacionDominio.NoNegativo(sueldoPorHora, nameof(SueldoPorHora));
-        HorasTrabajadas = ValidacionDominio.EnRangoInclusivo(
-            horasTrabajadas,
-            HORAS_MINIMAS_SEMANALES,
-            HORAS_MAXIMAS_SEMANALES,
-            nameof(HorasTrabajadas));
+        // El alta delega en la edición: una sola redacción de las reglas del contrato.
+        // La clase es sealed, así que no hay despacho virtual hacia una subclase.
+        ActualizarDatosDeContrato(sueldoPorHora, horasTrabajadas);
     }
 
     public decimal SueldoPorHora { get; private set; }
@@ -69,13 +66,22 @@ public sealed class EmpleadoPorHoras : Empleado
             new LineaCalculo("Horas extra", SueldoPorHora * FACTOR_HORA_EXTRA * horasExtra));
     }
 
+    /// <summary>
+    /// Aplica los datos del contrato. O se aplican todos, o no se aplica ninguno.
+    /// </summary>
     public void ActualizarDatosDeContrato(decimal sueldoPorHora, decimal horasTrabajadas)
     {
-        SueldoPorHora = ValidacionDominio.NoNegativo(sueldoPorHora, nameof(SueldoPorHora));
-        HorasTrabajadas = ValidacionDominio.EnRangoInclusivo(
+        // Validar todo antes de asignar nada: unas horas fuera de rango no deben dejar al
+        // empleado con el sueldo por hora nuevo y las horas viejas.
+        decimal sueldoPorHoraValidado =
+            ValidacionDominio.NoNegativo(sueldoPorHora, nameof(SueldoPorHora));
+        decimal horasTrabajadasValidadas = ValidacionDominio.EnRangoInclusivo(
             horasTrabajadas,
             HORAS_MINIMAS_SEMANALES,
             HORAS_MAXIMAS_SEMANALES,
             nameof(HorasTrabajadas));
+
+        SueldoPorHora = sueldoPorHoraValidado;
+        HorasTrabajadas = horasTrabajadasValidadas;
     }
 }

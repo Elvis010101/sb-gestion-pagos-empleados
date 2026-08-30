@@ -278,6 +278,31 @@ public sealed class InvariantesDelDominioPruebas
         construccion.Should().Throw<ExcepcionValorRequerido>();
     }
 
+    /// <summary>
+    /// El desglose se entrega como una copia: quien construyó el arreglo no puede seguir
+    /// alterando el cálculo después de que el resultado ya existe.
+    /// </summary>
+    /// <remarks>
+    /// Con la sintaxis <c>params</c> —que es como lo invocan las cuatro fórmulas— el arreglo
+    /// lo crea el compilador y nadie más lo referencia, así que el riesgo es teórico. Deja de
+    /// serlo en cuanto alguien construya el arreglo aparte para armar un desglose condicional,
+    /// que es exactamente lo que hará el quinto tipo de empleado el día que aparezca.
+    /// </remarks>
+    [Fact]
+    public void ResultadoPago_AlterarElArregloOriginal_NoModificaElDesglose()
+    {
+        // Arrange
+        LineaCalculo[] lineas = { new("Salario semanal", 1_000m) };
+        ResultadoPago resultado = new(lineas);
+
+        // Act
+        lineas[0] = new LineaCalculo("Monto manipulado", 999_999m);
+
+        // Assert
+        resultado.Total.Should().Be(1_000m);
+        resultado.Lineas.Should().Equal(new LineaCalculo("Salario semanal", 1_000m));
+    }
+
     [Theory]
     [InlineData(0, 20)]
     [InlineData(-1, 20)]

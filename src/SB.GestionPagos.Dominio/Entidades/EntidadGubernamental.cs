@@ -62,9 +62,19 @@ public sealed class EntidadGubernamental
     [MemberNotNull(nameof(Nombre), nameof(Categoria), nameof(PoderDelEstado), nameof(Sector))]
     private void EstablecerDatos(string nombre, string categoria, string poderDelEstado, string sector)
     {
-        Nombre = ValidacionDominio.TextoRequerido(nombre, nameof(Nombre));
-        Categoria = ValidacionDominio.TextoRequerido(categoria, nameof(Categoria));
-        PoderDelEstado = ValidacionDominio.TextoRequerido(poderDelEstado, nameof(PoderDelEstado));
-        Sector = ValidacionDominio.TextoRequerido(sector, nameof(Sector));
+        // Validar todo antes de asignar nada, por el mismo motivo que en Empleado. Aquí
+        // pesa además que el repositorio de este módulo reescribe el archivo de texto plano
+        // completo: una entidad medio actualizada en memoria acabaría como una línea
+        // corrupta en disco, y el archivo no tiene transacciones que lo deshagan.
+        string nombreValidado = ValidacionDominio.TextoRequerido(nombre, nameof(Nombre));
+        string categoriaValidada = ValidacionDominio.TextoRequerido(categoria, nameof(Categoria));
+        string poderDelEstadoValidado =
+            ValidacionDominio.TextoRequerido(poderDelEstado, nameof(PoderDelEstado));
+        string sectorValidado = ValidacionDominio.TextoRequerido(sector, nameof(Sector));
+
+        Nombre = nombreValidado;
+        Categoria = categoriaValidada;
+        PoderDelEstado = poderDelEstadoValidado;
+        Sector = sectorValidado;
     }
 }
