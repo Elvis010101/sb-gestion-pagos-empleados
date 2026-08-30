@@ -245,6 +245,32 @@ evita hacer 1,000 consultas de configuración, lo que rompería el RNF-04.
 negocio quedaría atado al contenedor de dependencias, y una operación aritmética pura
 pasaría a necesitar un simulacro para probarse.
 
+**D-03 — El número de seguro social identifica de forma única a un empleado.**
+Confirmado como supuesto de negocio. Se cierra en dos niveles, porque uno solo no alcanza:
+
+- **Índice único** sobre la columna en SQL Server (Bloque 5). Es la garantía real: dos
+  peticiones simultáneas pueden pasar ambas por una comprobación previa antes de que
+  cualquiera guarde, y solo el motor puede arbitrar esa carrera.
+- **Comprobación previa en `EmpleadoServicioBase`**, que en el caso normal devuelve un 409
+  con un mensaje entendible en lugar de dejar que estalle una excepción del motor.
+- **Traducción de la violación del índice** a 409 en el manejador global de excepciones
+  (Bloque 7), para que el caso raro de la carrera tampoco termine en un 500.
+
+**D-04 — La nómina semanal excluye a los empleados inactivos por omisión.**
+A un empleado dado de baja no se le paga la semana, así que incluirlo inflaría el total.
+El filtro `FiltroReporteSemanal.IncluirInactivos` permite pedir la población completa para
+auditoría, pero hay que pedirlo explícitamente: el valor por omisión de `bool` es el
+comportamiento seguro. Se modeló como booleano y no como `EstadoEmpleado?` justamente por
+eso — con el enum, "no enviar nada" habría significado "sin filtrar", es decir, la nómina
+inflada por descuido.
+
+Además, `ReporteSemanalDto` lleva en el encabezado la frase `PoblacionIncluida` ("Empleados
+activos de todos los departamentos"). Un total de nómina sin decir de quiénes es no se puede
+interpretar, y en cuanto el reporte se imprime o se pega en un correo, el contexto de la
+pantalla que lo pidió se pierde y el número queda solo.
+
+*Ambos supuestos van al README (Bloque 9).*
+
 ### 4.6 Entorno local verificado
 
 - .NET SDK **8.0.130** (fijado en `global.json` con `rollForward: latestFeature`)

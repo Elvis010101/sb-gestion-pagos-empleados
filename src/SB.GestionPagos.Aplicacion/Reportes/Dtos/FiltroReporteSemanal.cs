@@ -1,5 +1,3 @@
-using SB.GestionPagos.Dominio.Enumeraciones;
-
 namespace SB.GestionPagos.Aplicacion.Reportes.Dtos;
 
 /// <summary>
@@ -14,7 +12,22 @@ namespace SB.GestionPagos.Aplicacion.Reportes.Dtos;
 /// </remarks>
 public sealed record FiltroReporteSemanal
 {
+    /// <summary>Departamento a reportar. Nulo significa todos.</summary>
     public string? Departamento { get; init; }
 
-    public EstadoEmpleado? Estado { get; init; }
+    /// <summary>
+    /// Si el reporte debe incluir a los empleados dados de baja.
+    /// </summary>
+    /// <remarks>
+    /// El valor por omisión es <c>false</c>, y es una regla de negocio, no una comodidad: a
+    /// un empleado inactivo no se le paga la semana, así que incluirlo inflaría la nómina.
+    /// Se expone como opción explícita porque una auditoría sí puede necesitar ver a todos;
+    /// pedirlo tiene que ser una decisión consciente de quien consulta, nunca el estado por
+    /// omisión.
+    ///
+    /// Es un booleano y no un <c>EstadoEmpleado?</c> a propósito: con el enum, "no enviar
+    /// nada" significaría "sin filtrar", es decir, la nómina inflada por descuido. Aquí el
+    /// valor por omisión de <c>bool</c> es justamente el comportamiento seguro.
+    /// </remarks>
+    public bool IncluirInactivos { get; init; }
 }

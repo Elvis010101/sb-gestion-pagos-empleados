@@ -133,6 +133,12 @@ SB.GestionPagos.Aplicacion:
 - FluentValidation 11.*
 - FluentValidation.DependencyInjectionExtensions 11.*
 
+SB.GestionPagos.Servicios:
+- Microsoft.Extensions.Logging.Abstractions 8.0.*
+  Es SOLO la interfaz ILogger<T>, no una implementación de logging. Serilog vive
+  únicamente en el proyecto Api. Por eso se podría cambiar Serilog por NLog sin tocar
+  un solo servicio: es inversión de dependencias aplicada al logging.
+
 SB.GestionPagos.Pruebas:
 - xunit
 - xunit.runner.visualstudio
@@ -192,6 +198,12 @@ SB.GestionPagos.Api:
 SB.GestionPagos.Aplicacion:
 - FluentValidation 11.*
 - FluentValidation.DependencyInjectionExtensions 11.*
+
+SB.GestionPagos.Servicios:
+- Microsoft.Extensions.Logging.Abstractions 8.0.*
+  Es SOLO la interfaz ILogger<T>, no una implementación de logging. Serilog vive
+  únicamente en el proyecto Api. Por eso se podría cambiar Serilog por NLog sin tocar
+  un solo servicio: es inversión de dependencias aplicada al logging.
 
 SB.GestionPagos.Pruebas:
 - xunit
