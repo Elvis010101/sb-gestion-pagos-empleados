@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- El Dominio no tiene NINGUNA <ProjectReference> ni <PackageReference>.
+       No es un descuido: es la garantía, verificada por el compilador, de que la lógica
+       de negocio no puede depender de EF Core, ASP.NET, JSON ni de la base de datos.
+       Si algún día este bloque deja de estar vacío, la Onion se rompió. -->
+
+</Project>

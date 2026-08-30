@@ -1,0 +1,7 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\SB.GestionPagos.Dominio\SB.GestionPagos.Dominio.csproj" />
+  </ItemGroup>
+
+</Project>
