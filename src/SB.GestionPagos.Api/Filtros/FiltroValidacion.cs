@@ -2,6 +2,7 @@ using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace SB.GestionPagos.Api.Filtros;
@@ -25,11 +26,15 @@ namespace SB.GestionPagos.Api.Filtros;
 /// </remarks>
 public sealed class FiltroValidacion : IAsyncActionFilter
 {
-    private readonly IServiceProvider _proveedorDeServicios;
+    private const string TITULO_VALIDACION = "La solicitud contiene errores de validación";
 
-    public FiltroValidacion(IServiceProvider proveedorDeServicios)
+    private readonly IServiceProvider _proveedorDeServicios;
+    private readonly ProblemDetailsFactory _fabricaProblemDetails;
+
+    public FiltroValidacion(IServiceProvider proveedorDeServicios, ProblemDetailsFactory fabricaProblemDetails)
     {
         _proveedorDeServicios = proveedorDeServicios;
+        _fabricaProblemDetails = fabricaProblemDetails;
     }
 
     public async Task OnActionExecutionAsync(ActionExecutingContext contexto, ActionExecutionDelegate continuar)
@@ -60,8 +65,17 @@ public sealed class FiltroValidacion : IAsyncActionFilter
                 continue;
             }
 
-            contexto.Result = new BadRequestObjectResult(
-                new ValidationProblemDetails(ConstruirEstadoDelModelo(resultado)));
+            // El problema se pide a la fábrica en lugar de construirlo con `new`: así este
+            // 400 sale con el identificador de correlación y la ruta que falló, igual que
+            // cualquier otro error de la API. Construyéndolo a mano, este único caso quedaría
+            // sin ellos y sería el más frecuente de todos.
+            ValidationProblemDetails problema = _fabricaProblemDetails.CreateValidationProblemDetails(
+                contexto.HttpContext,
+                ConstruirEstadoDelModelo(resultado),
+                StatusCodes.Status400BadRequest,
+                TITULO_VALIDACION);
+
+            contexto.Result = new BadRequestObjectResult(problema);
 
             // Corta el flujo: la acción no llega a ejecutarse y el caso de uso nunca ve un
             // dato inválido.

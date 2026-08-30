@@ -1,4 +1,3 @@
-using System.Net.Mime;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -20,13 +19,9 @@ namespace SB.GestionPagos.Api.Controladores;
 /// <see cref="IAutenticacionServicio"/> y traduce el resultado a un código HTTP. Esa es toda
 /// su responsabilidad, y por eso el proyecto Api puede llamarse "solo host".
 /// </remarks>
-[ApiController]
 [Route("api/autenticacion")]
-[Produces(MediaTypeNames.Application.Json)]
-public sealed class AutenticacionControlador : ControllerBase
+public sealed class AutenticacionControlador : ControladorApi
 {
-    private const string TITULO_CREDENCIALES_INVALIDAS = "Credenciales inválidas";
-
     private readonly IAutenticacionServicio _autenticacionServicio;
 
     public AutenticacionControlador(IAutenticacionServicio autenticacionServicio)
@@ -56,18 +51,11 @@ public sealed class AutenticacionControlador : ControllerBase
         Resultado<RespuestaInicioSesionDto> resultado =
             await _autenticacionServicio.IniciarSesionAsync(solicitud, cancelacion);
 
-        if (!resultado.EsExitoso)
-        {
-            // 401 y no 400: el dato venía bien formado, lo que falla es la identidad. El
-            // mensaje es el mismo tanto si el usuario no existe como si la contraseña no
-            // coincide, y esa decisión se tomó en el servicio, no aquí.
-            return Problem(
-                title: TITULO_CREDENCIALES_INVALIDAS,
-                detail: resultado.Mensaje,
-                statusCode: StatusCodes.Status401Unauthorized);
-        }
-
-        return Ok(resultado.Valor);
+        // 401 y no 400: el dato venía bien formado, lo que falla es la identidad. Ese código
+        // no se elige aquí — lo decide la traducción única de ControladorApi a partir del tipo
+        // de error que clasificó el servicio. El mensaje es el mismo tanto si el usuario no
+        // existe como si la contraseña no coincide, y esa decisión también se tomó allá.
+        return resultado.EsExitoso ? Ok(resultado.Valor) : ProblemaDesde(resultado);
     }
 
     /// <summary>

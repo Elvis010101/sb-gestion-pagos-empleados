@@ -8,6 +8,15 @@
          autenticación viaja por HTTP. -->
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.*" />
 
+    <!-- Serilog vive ÚNICAMENTE en este proyecto. Las capas Servicios y Aplicación
+         registran contra ILogger<T> de Microsoft.Extensions.Logging.Abstractions, que es
+         solo la interfaz: cambiar Serilog por NLog sería editar este archivo y la clase
+         ConfiguracionRegistro, sin tocar un solo servicio. Eso es inversión de
+         dependencias aplicada al logging. -->
+    <PackageReference Include="Serilog.AspNetCore" Version="8.0.*" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="5.*" />
+    <PackageReference Include="Serilog.Sinks.File" Version="5.*" />
+
     <!-- Solo para que las herramientas `dotnet ef` puedan construir el DbContext en tiempo
          de diseño: este es el proyecto de arranque y ahí es donde el tooling busca el
          paquete. Con PrivateAssets=all no se propaga a nadie ni se publica en la salida:

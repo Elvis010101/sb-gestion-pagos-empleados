@@ -65,3 +65,6 @@ pnpm-debug.log*
 .DS_Store
 Thumbs.db
 *~
+
+# Salida del registro de Serilog
+Registros/
