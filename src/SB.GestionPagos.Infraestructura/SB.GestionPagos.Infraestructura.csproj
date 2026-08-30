@@ -5,4 +5,21 @@
     <ProjectReference Include="..\SB.GestionPagos.Aplicacion\SB.GestionPagos.Aplicacion.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <!-- El proveedor de SQL Server. Arrastra Microsoft.EntityFrameworkCore y
+         Microsoft.Extensions.DependencyInjection, que es de donde sale IServiceCollection. -->
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.*" />
+
+    <!-- Solo lo necesitan las herramientas `dotnet ef` para generar migraciones.
+         Es una dependencia de desarrollo: no se copia a la salida de publicación. -->
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.*">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+
+    <!-- IConfiguration, para leer la cadena de conexión del appsettings. Es SOLO la
+         abstracción: quién carga el JSON y en qué orden lo decide el host, no esta capa. -->
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="8.0.*" />
+  </ItemGroup>
+
 </Project>

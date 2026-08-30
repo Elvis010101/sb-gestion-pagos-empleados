@@ -2,6 +2,15 @@
 
   <ItemGroup>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
+
+    <!-- Solo para que las herramientas `dotnet ef` puedan construir el DbContext en tiempo
+         de diseño: este es el proyecto de arranque y ahí es donde el tooling busca el
+         paquete. Con PrivateAssets=all no se propaga a nadie ni se publica en la salida:
+         es una dependencia de compilación, no de ejecución. -->
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.*">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>
