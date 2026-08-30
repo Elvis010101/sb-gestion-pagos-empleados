@@ -10,7 +10,7 @@ namespace SB.GestionPagos.Dominio.Repositorios;
 /// <param name="Estado">Situación laboral del empleado.</param>
 /// <remarks>
 /// Se agrupan en un objeto en lugar de pasarlos sueltos para que agregar un criterio más
-/// adelante no obligue a cambiar la firma de <see cref="IEmpleadoRepositorio.BuscarAsync"/>
+/// adelante no obligue a cambiar la firma de <see cref="IEmpleadoRepositorio.BuscarPaginaAsync"/>
 /// ni a tocar las implementaciones que ya existen.
 /// </remarks>
 public sealed record FiltroBusquedaEmpleado(

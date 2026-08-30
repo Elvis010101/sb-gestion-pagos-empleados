@@ -38,6 +38,30 @@ internal static class ValidacionDominio
         return valor;
     }
 
+    /// <summary>
+    /// Sobrecarga entera de <see cref="EnRangoInclusivo(decimal, decimal, decimal, string)"/>.
+    /// </summary>
+    /// <remarks>
+    /// Existe como sobrecarga y no como método con otro nombre para que quien lea el código
+    /// vea una sola regla ("este valor debe estar en un rango"), sin importar el tipo.
+    /// </remarks>
+    internal static int EnRangoInclusivo(
+        int valor,
+        int valorMinimo,
+        int valorMaximo,
+        string nombrePropiedad)
+    {
+        if (valor < valorMinimo || valor > valorMaximo)
+        {
+            throw new ExcepcionValorFueraDeRango(
+                nombrePropiedad,
+                valor,
+                FormattableString.Invariant($"debe estar entre {valorMinimo} y {valorMaximo}"));
+        }
+
+        return valor;
+    }
+
     internal static decimal EnRangoInclusivo(
         decimal valor,
         decimal valorMinimo,
