@@ -168,3 +168,63 @@ un criterio evaluado.
   Server=localhost,1433;Database=SbGestionPagos;User Id=sa;Password=SbPrueba2026!;TrustServerCertificate=True;
 - El appsettings.json versionado NO debe contener la contraseña real. Usa un placeholder y
   documenta en el README cómo configurarla.
+
+## Paquetes autorizados del proyecto
+
+Usa exactamente estos. No agregues otros sin preguntarme primero.
+
+### Backend (.NET 8)
+
+SB.GestionPagos.Infraestructura:
+- Microsoft.EntityFrameworkCore.SqlServer 8.0.*
+- Microsoft.EntityFrameworkCore.Design 8.0.*
+- Microsoft.Extensions.Configuration.Abstractions 8.0.*
+- BCrypt.Net-Next 4.0.*
+- System.IdentityModel.Tokens.Jwt 8.*
+
+SB.GestionPagos.Api:
+- Microsoft.AspNetCore.Authentication.JwtBearer 8.0.*
+- Serilog.AspNetCore 8.0.*
+- Serilog.Sinks.Console
+- Serilog.Sinks.File
+- Swashbuckle.AspNetCore 6.*
+
+SB.GestionPagos.Aplicacion:
+- FluentValidation 11.*
+- FluentValidation.DependencyInjectionExtensions 11.*
+
+SB.GestionPagos.Pruebas:
+- xunit
+- xunit.runner.visualstudio
+- Microsoft.NET.Test.Sdk
+- FluentAssertions 6.*
+- NSubstitute 5.*   (para simular repositorios; NO uses Moq)
+
+El rate limiting NO requiere paquete: Microsoft.AspNetCore.RateLimiting está incluido en
+.NET 8. Usa builder.Services.AddRateLimiter(...).
+
+### Frontend
+
+Crear con: npm create vite@latest frontend -- --template react-ts
+
+Dependencias:
+- react-router-dom 6.*
+- axios
+- react-hook-form
+- zod
+- @hookform/resolvers
+
+Dev:
+- eslint, prettier, @typescript-eslint/*
+
+No agregues librerías de componentes (MUI, Ant, Chakra). El diseño debe replicar
+Maqueta.jpeg con CSS propio o CSS Modules: eso demuestra criterio de maquetación, que es
+un criterio evaluado.
+
+### Entorno local
+
+- SQL Server: contenedor Docker "sql-sb" en localhost,1433, usuario sa
+- Cadena de conexión (va SOLO en appsettings.Development.json, nunca en código):
+  Server=localhost,1433;Database=SbGestionPagos;User Id=sa;Password=SbPrueba2026!;TrustServerCertificate=True;
+- El appsettings.json versionado NO debe contener la contraseña real. Usa un placeholder y
+  documenta en el README cómo configurarla.
