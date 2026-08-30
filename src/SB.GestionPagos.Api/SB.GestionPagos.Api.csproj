@@ -3,6 +3,11 @@
   <ItemGroup>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
 
+    <!-- El middleware que lee la cabecera Authorization: Bearer, valida el token y arma
+         el ClaimsPrincipal de la petición. Va SOLO aquí: ninguna otra capa sabe que la
+         autenticación viaja por HTTP. -->
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.*" />
+
     <!-- Solo para que las herramientas `dotnet ef` puedan construir el DbContext en tiempo
          de diseño: este es el proyecto de arranque y ahí es donde el tooling busca el
          paquete. Con PrivateAssets=all no se propaga a nadie ni se publica en la salida:
