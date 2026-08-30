@@ -1,10 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SB.GestionPagos.Aplicacion.Seguridad;
 using SB.GestionPagos.Dominio.Repositorios;
 using SB.GestionPagos.Infraestructura.DatosPlanos;
 using SB.GestionPagos.Infraestructura.Persistencia;
 using SB.GestionPagos.Infraestructura.Persistencia.Repositorios;
+using SB.GestionPagos.Infraestructura.Seguridad;
 
 namespace SB.GestionPagos.Infraestructura.Configuracion;
 
@@ -61,8 +63,33 @@ public static class ConfiguracionInfraestructura
         servicios.AddScoped<IUsuarioRepositorio, UsuarioRepositorioSql>();
 
         AgregarAlmacenamientoEnArchivoPlano(servicios, configuracion);
+        AgregarSeguridad(servicios, configuracion);
 
         return servicios;
+    }
+
+    /// <summary>
+    /// Registra los dos servicios técnicos de seguridad: el hash de contraseñas y la emisión
+    /// de tokens.
+    /// </summary>
+    /// <remarks>
+    /// Ambos son <c>Singleton</c> porque no guardan estado por petición: uno aplica un
+    /// algoritmo sobre el texto que recibe y el otro firma con una clave que no cambia
+    /// mientras el proceso vive. Construir uno nuevo en cada petición sería trabajo tirado.
+    ///
+    /// Aquí se ve el cierre del Principio de Inversión de Dependencias: la capa Servicios
+    /// declaró que necesitaba "algo que hashee" y "algo que emita tokens" mediante dos
+    /// interfaces de Aplicación, y es esta línea —y solo esta— la que decide que ese algo
+    /// sea BCrypt y HMAC-SHA256.
+    /// </remarks>
+    private static void AgregarSeguridad(IServiceCollection servicios, IConfiguration configuracion)
+    {
+        // Se lee y se comprueba AL ARRANCAR. Si falta la clave de firma o quedó el marcador
+        // del repositorio, la aplicación no levanta.
+        servicios.AddSingleton(OpcionesJwt.LeerDe(configuracion));
+
+        servicios.AddSingleton<IServicioHash, ServicioHashBCrypt>();
+        servicios.AddSingleton<IGeneradorTokenJwt, GeneradorTokenJwt>();
     }
 
     /// <summary>

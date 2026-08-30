@@ -31,6 +31,15 @@
     <!-- IConfiguration, para leer la cadena de conexión del appsettings. Es SOLO la
          abstracción: quién carga el JSON y en qué orden lo decide el host, no esta capa. -->
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="8.0.*" />
+
+    <!-- Algoritmo de hash de contraseñas. Es un detalle reemplazable: vive aquí y no en
+         Aplicación, que solo conoce la interfaz IServicioHash. -->
+    <PackageReference Include="BCrypt.Net-Next" Version="4.0.*" />
+
+    <!-- Emisión y firma del JWT. Trae también Microsoft.IdentityModel.Tokens, de donde
+         salen SigningCredentials y TokenValidationParameters. Este proyecto EMITE y
+         describe cómo validar; quien engancha la validación al pipeline HTTP es la Api. -->
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.*" />
   </ItemGroup>
 
 </Project>
