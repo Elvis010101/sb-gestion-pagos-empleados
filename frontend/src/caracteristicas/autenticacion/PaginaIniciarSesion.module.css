@@ -1,0 +1,45 @@
+.pantalla {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: var(--espacio-mediano);
+  background-color: var(--color-azul-profundo);
+}
+
+.tarjeta {
+  width: 100%;
+  max-width: 24rem;
+  background-color: var(--color-blanco);
+  border-radius: var(--radio-tarjeta);
+  box-shadow: var(--sombra-tarjeta);
+  padding: var(--espacio-extra-grande);
+}
+
+.logo {
+  display: block;
+  width: 12rem;
+  max-width: 100%;
+  height: auto;
+  margin: 0 auto var(--espacio-grande);
+}
+
+.titulo {
+  font-size: var(--tamano-titulo-seccion);
+  font-weight: 700;
+  text-align: center;
+}
+
+.descripcion {
+  margin-top: var(--espacio-diminuto);
+  margin-bottom: var(--espacio-grande);
+  text-align: center;
+  color: var(--color-texto-secundario);
+  font-size: var(--tamano-texto-pequeno);
+}
+
+.formulario {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-mediano);
+}

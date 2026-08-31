@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
+    "target": "es2023",
+    "lib": ["ES2023", "DOM", "DOM.Iterable"],
+    "module": "esnext",
+    "types": ["vite/client"],
+    "allowArbitraryExtensions": true,
+    "skipLibCheck": true,
+
+    /* Modo empaquetador */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": true,
+    "moduleDetection": "force",
+    "noEmit": true,
+    "jsx": "react-jsx",
+
+    /* Rigor de tipos. `strict` NO viene activado en la plantilla de Vite y se agrega a
+       propósito: sin él, `strictNullChecks` está apagado y un `EmpleadoDto | undefined`
+       se deja usar como si siempre tuviera valor. La promesa de "sin any" no vale nada si
+       el compilador tolera nulos silenciosos. */
+    "strict": true,
+    "noImplicitOverride": true,
+
+    /* Reglas de higiene */
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "erasableSyntaxOnly": true,
+    "noFallthroughCasesInSwitch": true
+  },
+  "include": ["src"]
+}

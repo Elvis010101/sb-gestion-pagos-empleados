@@ -1,0 +1,47 @@
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-diminuto);
+}
+
+.etiqueta {
+  font-size: var(--tamano-texto-pequeno);
+  font-weight: 600;
+  color: var(--color-texto-secundario);
+}
+
+.control {
+  padding: 0.625rem 0.75rem;
+  border: 0.0625rem solid var(--color-borde);
+  border-radius: var(--radio-control);
+  background-color: var(--color-blanco);
+  color: var(--color-texto-principal);
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.control:focus {
+  outline: none;
+  border-color: var(--color-borde-foco);
+  box-shadow: var(--sombra-control-enfocado);
+}
+
+.control:disabled {
+  background-color: var(--color-gris-fondo);
+  color: var(--color-texto-secundario);
+}
+
+.controlConError {
+  border-color: var(--color-error);
+}
+
+.controlConError:focus {
+  border-color: var(--color-error);
+  box-shadow: 0 0 0 0.1875rem rgba(180, 35, 24, 0.2);
+}
+
+.error {
+  font-size: var(--tamano-texto-pequeno);
+  color: var(--color-error);
+}

@@ -1,0 +1,69 @@
+.contenedorCentrado {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--espacio-mediano);
+  padding: var(--espacio-extra-grande);
+  text-align: center;
+  color: var(--color-texto-secundario);
+}
+
+.girador {
+  width: 2rem;
+  height: 2rem;
+  border: 0.1875rem solid var(--color-borde);
+  border-top-color: var(--color-azul-profundo);
+  border-radius: 50%;
+  animation: girar 0.8s linear infinite;
+}
+
+@keyframes girar {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Respeta la preferencia del sistema de reducir animaciones. Un giro perpetuo puede provocar
+   malestar a personas con sensibilidad al movimiento, y desactivarlo no cuesta nada. */
+@media (prefers-reduced-motion: reduce) {
+  .girador {
+    animation: none;
+  }
+}
+
+.aviso {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-diminuto);
+  padding: var(--espacio-mediano);
+  border: 0.0625rem solid;
+  border-radius: var(--radio-control);
+  text-align: left;
+}
+
+.avisoDeError {
+  border-color: rgba(180, 35, 24, 0.35);
+  background-color: var(--color-error-fondo);
+  color: var(--color-error);
+}
+
+.tituloDelAviso {
+  font-weight: 600;
+}
+
+.identificadorDeCorrelacion {
+  font-size: var(--tamano-texto-pequeno);
+  color: var(--color-texto-secundario);
+  word-break: break-all;
+}
+
+.accionesDelAviso {
+  margin-top: var(--espacio-pequeno);
+}
+
+.tituloDeEstadoVacio {
+  font-size: var(--tamano-titulo-seccion);
+  font-weight: 600;
+  color: var(--color-texto-principal);
+}

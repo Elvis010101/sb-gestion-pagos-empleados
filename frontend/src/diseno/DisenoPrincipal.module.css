@@ -1,0 +1,83 @@
+.contenedor {
+  display: flex;
+  min-height: 100vh;
+  background-color: var(--color-azul-profundo);
+}
+
+.areaDeContenido {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+
+  /* Sin esto, una tabla ancha estira el contenedor flexible y desborda la ventana: el valor
+     por omisión de `min-width` en un elemento flexible es `auto`, no cero. */
+  min-width: 0;
+}
+
+.encabezado {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--espacio-mediano);
+  padding: var(--espacio-grande) var(--espacio-extra-grande) var(--espacio-mediano);
+}
+
+.tituloDePagina {
+  color: var(--color-blanco);
+  font-size: var(--tamano-titulo-pagina);
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.datosDeSesion {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-mediano);
+  color: var(--color-texto-sobre-azul);
+  font-size: var(--tamano-texto-pequeno);
+}
+
+.nombreDeUsuario {
+  font-weight: 600;
+  color: var(--color-blanco);
+}
+
+.botonCerrarSesion {
+  padding: 0.375rem 0.875rem;
+  border: 0.0625rem solid rgba(255, 255, 255, 0.35);
+  border-radius: var(--radio-control);
+  background-color: transparent;
+  color: var(--color-blanco);
+  font-size: var(--tamano-texto-pequeno);
+  font-weight: 600;
+}
+
+.botonCerrarSesion:hover {
+  background-color: rgba(255, 255, 255, 0.12);
+}
+
+.panel {
+  flex: 1;
+  background-color: var(--color-gris-fondo);
+
+  /* Las esquinas superiores redondeadas sobre el lienzo azul son el rasgo que define la
+     maqueta: el panel no llega al borde de arriba y deja ver el azul detrás. */
+  border-radius: var(--radio-panel) var(--radio-panel) 0 0;
+  padding: var(--espacio-extra-grande);
+  min-width: 0;
+}
+
+@media (max-width: 56.25rem) {
+  .contenedor {
+    flex-direction: column;
+  }
+
+  .encabezado {
+    flex-wrap: wrap;
+    padding: var(--espacio-mediano) var(--espacio-mediano) var(--espacio-pequeno);
+  }
+
+  .panel {
+    padding: var(--espacio-mediano);
+  }
+}

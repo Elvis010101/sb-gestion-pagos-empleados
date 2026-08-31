@@ -1,0 +1,53 @@
+.boton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--espacio-pequeno);
+  padding: 0.625rem 1.25rem;
+  border: 0.0625rem solid transparent;
+  border-radius: var(--radio-control);
+  font-weight: 600;
+  font-size: var(--tamano-texto-base);
+  line-height: 1.2;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    opacity 0.15s ease;
+}
+
+.boton:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.primario {
+  background-color: var(--color-azul-profundo);
+  color: var(--color-blanco);
+}
+
+.primario:hover:not(:disabled) {
+  background-color: var(--color-azul-elevado);
+}
+
+.secundario {
+  background-color: var(--color-blanco);
+  border-color: var(--color-borde);
+  color: var(--color-texto-principal);
+}
+
+.secundario:hover:not(:disabled) {
+  background-color: var(--color-gris-fondo);
+}
+
+.peligro {
+  background-color: var(--color-error);
+  color: var(--color-blanco);
+}
+
+.peligro:hover:not(:disabled) {
+  background-color: #93231a;
+}
+
+.anchoCompleto {
+  width: 100%;
+}

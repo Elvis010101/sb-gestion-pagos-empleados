@@ -1,0 +1,83 @@
+.barraLateral {
+  display: flex;
+  flex-direction: column;
+  width: var(--ancho-barra-lateral);
+  flex-shrink: 0;
+  background-color: var(--color-azul-institucional);
+  padding: var(--espacio-grande) var(--espacio-mediano);
+  gap: var(--espacio-grande);
+
+  /* Fija: la navegación acompaña al usuario aunque la tabla de empleados sea larga. */
+  position: sticky;
+  top: 0;
+  align-self: flex-start;
+  height: 100vh;
+}
+
+.logo {
+  display: block;
+  width: 13.75rem;
+  max-width: 100%;
+  height: auto;
+  padding: 0 var(--espacio-pequeno);
+
+  /* El activo institucional viene en azul oscuro sobre transparente y la maqueta lo muestra
+     en blanco sobre el azul. Se invierte con un filtro en vez de editar el PNG para no tocar
+     el archivo original que entregó la institución. */
+  filter: brightness(0) invert(1);
+}
+
+.navegacion {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-diminuto);
+}
+
+.enlace {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-pequeno);
+  padding: 0.6875rem var(--espacio-mediano);
+  border-radius: var(--radio-control);
+  color: var(--color-texto-sobre-azul);
+  font-weight: 600;
+  font-size: var(--tamano-texto-base);
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.enlace:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+  color: var(--color-blanco);
+}
+
+.enlaceActivo {
+  background-color: var(--color-azul-elevado);
+  color: var(--color-blanco);
+}
+
+.icono {
+  width: 1.25rem;
+  height: 1.25rem;
+  flex-shrink: 0;
+}
+
+@media (max-width: 56.25rem) {
+  .barraLateral {
+    width: 100%;
+    height: auto;
+    position: static;
+    align-self: stretch;
+    gap: var(--espacio-mediano);
+  }
+
+  .logo {
+    width: 10rem;
+  }
+
+  .navegacion {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+}

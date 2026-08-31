@@ -1,0 +1,65 @@
+/*
+ * Tokens de la identidad visual de la Superintendencia de Bancos.
+ *
+ * Los dos colores que fija el enunciado están aquí una sola vez y con su valor literal. Todo
+ * lo demás del sistema los referencia por nombre: si mañana la institución cambia su azul,
+ * se edita una línea y no cuarenta archivos. Es la misma razón por la que en el backend
+ * ningún literal numérico de negocio vive suelto en el código.
+ */
+:root {
+  /* --- Colores obligatorios del enunciado --- */
+  --color-azul-institucional: rgba(13, 48, 72, 0.9);
+  --color-gris-fondo: rgb(237, 240, 247);
+
+  /* --- Derivados de la maqueta --- */
+  /* Versión opaca del azul. La barra lateral usa el color con alfa tal como lo pide el
+     documento, y el lienzo que hay detrás usa este, para que la transparencia se apoye en
+     un fondo estable y no en el blanco del navegador. */
+  --color-azul-profundo: #0d3048;
+
+  /* Fondo del ítem de navegación activo: el mismo azul, un paso más claro. */
+  --color-azul-elevado: #1a4159;
+
+  /* Naranja del ícono home.svg provisto por la institución. Es el único acento cálido del
+     sistema y por eso se reserva para señalar el elemento activo. */
+  --color-naranja-acento: #d9480f;
+
+  --color-blanco: #ffffff;
+  --color-texto-principal: #16324a;
+  --color-texto-secundario: #5c6f82;
+  --color-texto-sobre-azul: rgba(255, 255, 255, 0.82);
+  --color-borde: #dbe2ed;
+  --color-borde-foco: #2f6f9f;
+
+  /* --- Colores de estado --- */
+  --color-error: #b42318;
+  --color-error-fondo: #fef3f2;
+  --color-exito: #12734b;
+  --color-exito-fondo: #edfbf3;
+  --color-aviso: #b54708;
+  --color-aviso-fondo: #fffaeb;
+
+  /* --- Geometría --- */
+  --ancho-barra-lateral: 17.5rem;
+  --radio-panel: 1.5rem;
+  --radio-tarjeta: 1rem;
+  --radio-control: 0.5rem;
+
+  /* --- Elevación --- */
+  --sombra-tarjeta: 0 0.125rem 0.75rem rgba(13, 48, 72, 0.08);
+  --sombra-control-enfocado: 0 0 0 0.1875rem rgba(47, 111, 159, 0.25);
+
+  /* --- Espaciado --- */
+  --espacio-diminuto: 0.25rem;
+  --espacio-pequeno: 0.5rem;
+  --espacio-mediano: 1rem;
+  --espacio-grande: 1.5rem;
+  --espacio-extra-grande: 2rem;
+
+  /* --- Tipografía --- */
+  --familia-tipografica: 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
+  --tamano-texto-pequeno: 0.8125rem;
+  --tamano-texto-base: 0.9375rem;
+  --tamano-titulo-pagina: 1.625rem;
+  --tamano-titulo-seccion: 1.125rem;
+}

@@ -1,0 +1,27 @@
+.tarjeta {
+  background-color: var(--color-blanco);
+  border-radius: var(--radio-tarjeta);
+  box-shadow: var(--sombra-tarjeta);
+  padding: var(--espacio-grande);
+  min-width: 0;
+}
+
+.encabezado {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--espacio-mediano);
+  flex-wrap: wrap;
+  margin-bottom: var(--espacio-grande);
+}
+
+.titulo {
+  font-size: var(--tamano-titulo-seccion);
+  font-weight: 700;
+}
+
+.descripcion {
+  margin-top: var(--espacio-diminuto);
+  color: var(--color-texto-secundario);
+  font-size: var(--tamano-texto-pequeno);
+}
