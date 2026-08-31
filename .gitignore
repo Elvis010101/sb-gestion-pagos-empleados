@@ -60,6 +60,16 @@ pnpm-debug.log*
 .eslintcache
 
 # ---------------------------------------------------------------------------
+# Documentos de trabajo del candidato
+# Notas de proceso, no entregables. Lo que de ellos importa para la entrega ya está
+# volcado en el README (supuestos, decisiones y alternativas descartadas).
+# La barra inicial ancla el patrón a la raíz: un PLAN.md dentro de una subcarpeta
+# sí se versionaría, que es lo correcto para un patrón tan genérico.
+# ---------------------------------------------------------------------------
+/PLAN.md
+/Notas.md
+
+# ---------------------------------------------------------------------------
 # Sistema operativo
 # ---------------------------------------------------------------------------
 .DS_Store

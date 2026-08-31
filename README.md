@@ -141,7 +141,14 @@ existencia de una base de datos. Si ese archivo deja de estar vacío, la Onion s
 | **Api** (host) | Controladores delgados, registro de dependencias, canal HTTP | Cero lógica de negocio |
 
 > **Aplicación es el guion; Servicios son los actores.** El documento de SB enumera ambas
-> capas pero no las define; esta es la lectura adoptada, y está justificada en `PLAN.md §4.3`.
+> capas pero no las define. La lectura adoptada: **Aplicación declara *qué* puede hacer el
+> sistema** —es un proyecto de contratos, abstracto y estable, que cambia solo cuando cambian
+> los casos de uso—, y **Servicios implementa *cómo* se coordinan** —concreto y volátil, cambia
+> con cada detalle de orquestación—.
+>
+> *Alternativa descartada:* la Clean Architecture canónica fusiona ambas en una sola capa
+> `Application`. Se descarta porque el documento de SB enumera literalmente cuatro capas, y
+> porque separarlas hace **visible** la Regla de Dependencia, que es justo lo que se evalúa.
 
 ### El flujo de una petición
 
@@ -559,8 +566,9 @@ recortar en memoria. `AsNoTracking()` en toda consulta de lectura; `AnyAsync` (q
 **TPH** con columnas compartidas entre subtipos hermanos; cinco índices que sostienen los tres
 filtros del RF-03 y el orden de la paginación. **Lo que falta:** *relaciones*. El modelo
 final no tiene ninguna clave foránea, porque `Departamento` quedó como columna de texto
-indexada en lugar de tabla catálogo. Es la única desviación respecto de `PLAN.md §2.3`.
-Ver §11.
+indexada en lugar de tabla catálogo. Es una desviación consciente respecto del análisis
+previo, que sí había previsto `Departamento` como tabla catálogo con clave foránea
+precisamente para tener una relación real que sustentar. Ver §11.
 
 **Criterios de conceptualización (p. 7).** Las 8 preguntas se responden **por correo**, según
 `Instrucciones.txt`. **Ese entregable todavía no está redactado** — ver §11.
@@ -625,8 +633,7 @@ Honestidad sobre el estado real de la entrega:
 │   └── SB.GestionPagos.Api/             Host: controladores, Serilog, Swagger, middleware
 ├── tests/SB.GestionPagos.Pruebas/   98 pruebas unitarias (xUnit)
 ├── .editorconfig                    Las 11 normas de nomenclatura, verificadas en compilación
-├── Directory.Build.props            net8.0 + EnforceCodeStyleInBuild para las 6 capas
-└── PLAN.md                          Análisis previo: requisitos, inconsistencias, diseño
+└── Directory.Build.props            net8.0 + EnforceCodeStyleInBuild para las 6 capas
 ```
 
 ### Nota sobre confidencialidad
