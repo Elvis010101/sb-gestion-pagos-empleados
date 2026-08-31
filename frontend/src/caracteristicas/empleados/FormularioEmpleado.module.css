@@ -4,19 +4,33 @@
   gap: var(--espacio-grande);
 }
 
+/*
+ * Es un <fieldset>, que se usa por lo que aporta —agrupa los campos para un lector de
+ * pantalla y los deshabilita todos de golpe mientras se envía—, pero su apariencia por
+ * omisión es un recuadro con la leyenda encajada en el borde. Se reajusta por completo.
+ *
+ * `min-width: 0` no es opcional: el navegador le da a todo <fieldset> un `min-width:
+ * min-content`, y sin anularlo la rejilla de campos se niega a encoger y desborda la tarjeta
+ * en pantallas estrechas.
+ */
 .grupo {
   display: flex;
   flex-direction: column;
   gap: var(--espacio-mediano);
+  border: none;
+  padding: 0;
+  margin: 0;
+  min-width: 0;
 }
 
 .tituloDelGrupo {
+  width: 100%;
   font-size: var(--tamano-texto-pequeno);
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.03em;
   color: var(--color-texto-secundario);
-  padding-bottom: var(--espacio-pequeno);
+  padding: 0 0 var(--espacio-pequeno);
   border-bottom: 0.0625rem solid var(--color-borde);
 }
 

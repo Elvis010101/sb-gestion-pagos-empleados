@@ -214,10 +214,12 @@ export function PaginaReporteSemanal() {
             </div>
           )}
 
+          {/* La fecha va al final: el formato de hora en español ya termina en "p. m.", y
+              tenerla en medio de la frase producía dos puntos seguidos. */}
           <p className={estilos.piePersistente}>
-            Reporte generado el {formatearFechaYHora(reporte.fechaGeneracionUtc)}. El total lo
-            calcula el servidor: la interfaz no suma las filas, para que no existan dos versiones de
-            cuánto se paga esta semana.
+            El total lo calcula el servidor: la interfaz no suma las filas, para que no existan dos
+            versiones de cuánto se paga esta semana. Reporte generado el{' '}
+            {formatearFechaYHora(reporte.fechaGeneracionUtc)}
           </p>
         </>
       ) : null}
