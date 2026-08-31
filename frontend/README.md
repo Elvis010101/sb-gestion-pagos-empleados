@@ -62,6 +62,22 @@ La alternativa —`components/`, `services/`, `types/`— obliga a abrir cuatro 
 tocar una sola pantalla y no deja ver qué se puede borrar cuando un módulo deja de hacer
 falta. Con este corte, es una carpeta.
 
+## Pantallas
+
+| Ruta                          | Qué hace                                                                  | Escritura |
+| ----------------------------- | ------------------------------------------------------------------------- | --------- |
+| `/acceso`                     | Inicio de sesión. Única pantalla pública.                                  | —         |
+| `/`                           | Inicio, con accesos directos según el rol.                                 | —         |
+| `/consulta`                   | Empleados con filtros por nombre, departamento y estado, y paginación.     | Admin     |
+| `/crear-registro`             | Alta. El formulario cambia sus campos según el tipo de contrato.           | Admin     |
+| `/empleados/:id/editar`       | Edición. Detecta el tipo desde el empleado y recalcula el pago al guardar. | Admin     |
+| `/entidades-gubernamentales`  | Catálogo con búsqueda por nombre y sector, y CRUD completo.                | Admin     |
+| `/reporte-semanal`            | Nómina de la semana con el desglose del cálculo por empleado.              | —         |
+
+Con el rol `Usuario`, las acciones de escritura no se dibujan. **Ocultarlas es cortesía, no
+seguridad**: quien escriba la dirección a mano llega igual, y ahí el que dice que no es el
+403 del servidor.
+
 ## Decisiones que conviene conocer
 
 - **El token vive en `localStorage`, y solo el token.** Ni el nombre ni el rol se guardan: el
@@ -74,5 +90,12 @@ falta. Con este corte, es una carpeta.
   con `enum` de TypeScript, que `erasableSyntaxOnly` prohíbe.
 - **Un solo cliente HTTP con interceptores.** El token se inyecta en un punto y el 401 se
   maneja en un punto. Ningún componente conoce axios: todos ven `ErrorApi`.
+- **El formulario de empleado no sabe cuántos tipos de contrato existen.** Cada tipo se
+  declara una vez en `caracteristicas/empleados/configuracionDeTiposDeEmpleado.ts`: sus
+  campos, sus límites y cómo llamar a su propio endpoint. El formulario recorre esa lista y
+  el esquema de Zod se construye a partir de ella, así que **agregar un quinto tipo de
+  empleado es agregar una entrada al registro** — el formulario, la tabla y el enrutador no
+  se tocan. Es el espejo del polimorfismo del Dominio, donde cada entidad sabe calcular su
+  propio pago y ningún servicio pregunta de qué tipo es nadie.
 - **`strict` está activado en el `tsconfig`.** La plantilla de Vite no lo trae, y sin él la
   promesa de "ningún `any`" no significa nada, porque los nulos pasan sin control.

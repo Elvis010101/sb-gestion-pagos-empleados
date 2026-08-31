@@ -1,0 +1,25 @@
+.busqueda {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--espacio-mediano);
+  padding-bottom: var(--espacio-grande);
+  margin-bottom: var(--espacio-grande);
+  border-bottom: 0.0625rem solid var(--color-borde);
+}
+
+.campo {
+  flex: 1 1 14rem;
+  min-width: 10rem;
+}
+
+.acciones {
+  display: flex;
+  gap: var(--espacio-pequeno);
+}
+
+.resumen {
+  margin-top: var(--espacio-mediano);
+  font-size: var(--tamano-texto-pequeno);
+  color: var(--color-texto-secundario);
+}

@@ -1,6 +1,6 @@
 import { forwardRef, useId, type InputHTMLAttributes } from 'react';
 
-import estilos from './CampoDeTexto.module.css';
+import estilos from './Campos.module.css';
 
 interface PropiedadesCampoDeTexto extends InputHTMLAttributes<HTMLInputElement> {
   etiqueta: string;

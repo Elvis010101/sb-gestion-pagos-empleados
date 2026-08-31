@@ -1,0 +1,76 @@
+.filtros {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--espacio-mediano);
+  padding-bottom: var(--espacio-grande);
+  margin-bottom: var(--espacio-grande);
+  border-bottom: 0.0625rem solid var(--color-borde);
+}
+
+.campo {
+  flex: 1 1 16rem;
+  min-width: 12rem;
+}
+
+.resumen {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  gap: var(--espacio-mediano);
+  margin-bottom: var(--espacio-grande);
+}
+
+.indicador {
+  padding: var(--espacio-mediano);
+  border: 0.0625rem solid var(--color-borde);
+  border-radius: var(--radio-control);
+  background-color: var(--color-gris-fondo);
+}
+
+.etiquetaDelIndicador {
+  display: block;
+  font-size: var(--tamano-texto-pequeno);
+  color: var(--color-texto-secundario);
+  margin-bottom: var(--espacio-diminuto);
+}
+
+.valorDelIndicador {
+  display: block;
+  font-size: var(--tamano-titulo-seccion);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.poblacion {
+  font-size: var(--tamano-texto-base);
+}
+
+.filaDeDesglose td {
+  background-color: var(--color-gris-fondo);
+}
+
+.desglose {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-diminuto);
+  padding: var(--espacio-pequeno) 0;
+}
+
+.lineaDeDesglose {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--espacio-mediano);
+  max-width: 28rem;
+  font-size: var(--tamano-texto-pequeno);
+}
+
+.montoDeLinea {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+.piePersistente {
+  margin-top: var(--espacio-mediano);
+  font-size: var(--tamano-texto-pequeno);
+  color: var(--color-texto-secundario);
+}

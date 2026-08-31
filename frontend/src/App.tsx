@@ -2,8 +2,12 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 
 import { PaginaIniciarSesion } from './caracteristicas/autenticacion/PaginaIniciarSesion';
 import { ProveedorSesion } from './caracteristicas/autenticacion/ProveedorSesion';
+import { PaginaConsultaEmpleados } from './caracteristicas/empleados/PaginaConsultaEmpleados';
+import { PaginaCrearEmpleado } from './caracteristicas/empleados/PaginaCrearEmpleado';
+import { PaginaEditarEmpleado } from './caracteristicas/empleados/PaginaEditarEmpleado';
+import { PaginaEntidadesGubernamentales } from './caracteristicas/entidadesGubernamentales/PaginaEntidadesGubernamentales';
 import { PaginaInicio } from './caracteristicas/inicio/PaginaInicio';
-import { PaginaEnConstruccion } from './comunes/componentes/PaginaEnConstruccion';
+import { PaginaReporteSemanal } from './caracteristicas/reportes/PaginaReporteSemanal';
 import { DisenoPrincipal } from './diseno/DisenoPrincipal';
 import { RutaProtegida } from './rutas/RutaProtegida';
 import { Rutas } from './rutas/rutas';
@@ -19,6 +23,11 @@ import { Rutas } from './rutas/rutas';
  *
  * La pantalla de acceso queda FUERA de ese anidamiento porque no debe mostrar la barra
  * lateral: quien no ha entrado no tiene menú que ver.
+ *
+ * Ninguna ruta se declara "solo para administradores". La restricción por rol se aplica
+ * dentro de cada pantalla, y sobre todo la aplica el servidor: esconder una ruta en el
+ * navegador no es una medida de seguridad, porque el código del cliente está en manos de
+ * quien lo usa.
  */
 export function App() {
   return (
@@ -30,26 +39,14 @@ export function App() {
           <Route element={<RutaProtegida />}>
             <Route element={<DisenoPrincipal />}>
               <Route path={Rutas.Inicio} element={<PaginaInicio />} />
-              <Route
-                path={Rutas.ConsultaEmpleados}
-                element={<PaginaEnConstruccion titulo="Consulta de empleados" />}
-              />
-              <Route
-                path={Rutas.CrearRegistro}
-                element={<PaginaEnConstruccion titulo="Crear registro" />}
-              />
-              <Route
-                path={Rutas.EditarEmpleado}
-                element={<PaginaEnConstruccion titulo="Editar empleado" />}
-              />
+              <Route path={Rutas.ConsultaEmpleados} element={<PaginaConsultaEmpleados />} />
+              <Route path={Rutas.CrearRegistro} element={<PaginaCrearEmpleado />} />
+              <Route path={Rutas.EditarEmpleado} element={<PaginaEditarEmpleado />} />
               <Route
                 path={Rutas.EntidadesGubernamentales}
-                element={<PaginaEnConstruccion titulo="Entidades gubernamentales" />}
+                element={<PaginaEntidadesGubernamentales />}
               />
-              <Route
-                path={Rutas.ReporteSemanal}
-                element={<PaginaEnConstruccion titulo="Reporte semanal" />}
-              />
+              <Route path={Rutas.ReporteSemanal} element={<PaginaReporteSemanal />} />
             </Route>
           </Route>
 

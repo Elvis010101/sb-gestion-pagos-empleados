@@ -1,0 +1,70 @@
+/* Envoltorio con desplazamiento propio. Sin él, una tabla ancha empuja el ancho de la página
+   y aparece una barra horizontal en TODO el documento, incluida la barra lateral. */
+.envoltorio {
+  overflow-x: auto;
+  border: 0.0625rem solid var(--color-borde);
+  border-radius: var(--radio-control);
+}
+
+.tabla {
+  min-width: 44rem;
+  font-size: var(--tamano-texto-base);
+}
+
+.tabla thead th {
+  padding: 0.75rem var(--espacio-mediano);
+  background-color: var(--color-gris-fondo);
+  text-align: left;
+  font-size: var(--tamano-texto-pequeno);
+  font-weight: 700;
+  color: var(--color-texto-secundario);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+}
+
+.tabla tbody td {
+  padding: 0.75rem var(--espacio-mediano);
+  border-top: 0.0625rem solid var(--color-borde);
+  vertical-align: middle;
+}
+
+.tabla tbody tr:hover {
+  background-color: rgba(237, 240, 247, 0.55);
+}
+
+.columnaNumerica {
+  text-align: right;
+
+  /* Cifras de ancho fijo: sin esto, las columnas de dinero bailan al comparar filas. */
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.columnaDeAcciones {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.acciones {
+  display: inline-flex;
+  gap: var(--espacio-pequeno);
+}
+
+.insignia {
+  display: inline-block;
+  padding: 0.125rem 0.5rem;
+  border-radius: 62.4375rem;
+  font-size: var(--tamano-texto-pequeno);
+  font-weight: 600;
+}
+
+.insigniaActivo {
+  background-color: var(--color-exito-fondo);
+  color: var(--color-exito);
+}
+
+.insigniaInactivo {
+  background-color: var(--color-aviso-fondo);
+  color: var(--color-aviso);
+}

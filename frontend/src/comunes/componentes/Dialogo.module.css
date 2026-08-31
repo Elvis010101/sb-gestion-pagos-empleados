@@ -1,0 +1,38 @@
+.dialogo {
+  border: none;
+  border-radius: var(--radio-tarjeta);
+  padding: var(--espacio-grande);
+  max-width: 26rem;
+  width: calc(100% - 2rem);
+  box-shadow: 0 1rem 2.5rem rgba(13, 48, 72, 0.25);
+  color: var(--color-texto-principal);
+}
+
+.dialogo::backdrop {
+  background-color: rgba(13, 48, 72, 0.55);
+}
+
+.titulo {
+  font-size: var(--tamano-titulo-seccion);
+  font-weight: 700;
+  margin-bottom: var(--espacio-pequeno);
+}
+
+.mensaje {
+  color: var(--color-texto-secundario);
+  margin-bottom: var(--espacio-grande);
+}
+
+.acciones {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--espacio-pequeno);
+}
+
+.dialogoAncho {
+  max-width: 38rem;
+}
+
+.cuerpo {
+  margin-bottom: var(--espacio-grande);
+}

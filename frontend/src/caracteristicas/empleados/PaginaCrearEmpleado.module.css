@@ -1,0 +1,17 @@
+.selectorDeTipo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-pequeno);
+  padding-bottom: var(--espacio-grande);
+  margin-bottom: var(--espacio-grande);
+  border-bottom: 0.0625rem solid var(--color-borde);
+}
+
+.descripcionDelTipo {
+  font-size: var(--tamano-texto-pequeno);
+  color: var(--color-texto-secundario);
+}
+
+.selector {
+  max-width: 26rem;
+}

@@ -67,3 +67,12 @@
   font-weight: 600;
   color: var(--color-texto-principal);
 }
+
+.listaDeMensajes {
+  margin: var(--espacio-diminuto) 0 0;
+  padding-left: var(--espacio-grande);
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-diminuto);
+  font-size: var(--tamano-texto-pequeno);
+}

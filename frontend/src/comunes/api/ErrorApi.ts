@@ -3,15 +3,17 @@ import axios from 'axios';
 import type { ProblemaApi } from '../tipos/comunes';
 
 /**
- * Códigos de estado HTTP que el frontend distingue. Nombrarlos evita que aparezcan literales
- * como `401` sueltos en los componentes, donde nadie recuerda qué significaba cada número.
+ * Códigos de estado HTTP que el frontend trata de forma especial. Nombrarlos evita que
+ * aparezcan literales como `401` sueltos en el código, donde nadie recuerda qué significaba
+ * cada número.
+ *
+ * Están solo los que exigen una decisión propia. El 400, el 404 y el 409 no aparecen porque
+ * para ellos no hay nada que decidir: se muestra el motivo que redactó el servidor, que es el
+ * único que conoce la regla de negocio que se violó.
  */
 export const CodigoEstadoHttp = {
-  SolicitudIncorrecta: 400,
   NoAutorizado: 401,
   Prohibido: 403,
-  NoEncontrado: 404,
-  Conflicto: 409,
   DemasiadasPeticiones: 429,
   ErrorInterno: 500,
 } as const;
@@ -71,10 +73,6 @@ export class ErrorApi extends Error {
     this.codigoEstado = codigoEstado;
     this.erroresPorCampo = erroresPorCampo;
     this.idCorrelacion = idCorrelacion;
-  }
-
-  get esErrorDeValidacion(): boolean {
-    return Object.keys(this.erroresPorCampo).length > 0;
   }
 }
 

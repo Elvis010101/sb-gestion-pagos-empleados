@@ -1,0 +1,40 @@
+.formulario {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-grande);
+}
+
+.grupo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-mediano);
+}
+
+.tituloDelGrupo {
+  font-size: var(--tamano-texto-pequeno);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--color-texto-secundario);
+  padding-bottom: var(--espacio-pequeno);
+  border-bottom: 0.0625rem solid var(--color-borde);
+}
+
+.rejilla {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: var(--espacio-mediano);
+}
+
+.campoConAyuda {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-diminuto);
+}
+
+.acciones {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--espacio-pequeno);
+  flex-wrap: wrap;
+}

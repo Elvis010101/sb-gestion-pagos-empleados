@@ -45,3 +45,22 @@
   font-size: var(--tamano-texto-pequeno);
   color: var(--color-error);
 }
+
+.control:is(select) {
+  /* La flecha nativa del selector desaparece en algunos navegadores al fijar el relleno, así
+     que se deja el aspecto por omisión del sistema en lugar de dibujar una propia. */
+  appearance: auto;
+}
+
+.casilla {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-pequeno);
+  font-size: var(--tamano-texto-base);
+  color: var(--color-texto-principal);
+}
+
+.ayuda {
+  font-size: var(--tamano-texto-pequeno);
+  color: var(--color-texto-secundario);
+}

@@ -1,0 +1,26 @@
+.paginador {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--espacio-mediano);
+  margin-top: var(--espacio-mediano);
+}
+
+.resumen {
+  font-size: var(--tamano-texto-pequeno);
+  color: var(--color-texto-secundario);
+}
+
+.controles {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-pequeno);
+}
+
+.indicadorDePagina {
+  font-size: var(--tamano-texto-pequeno);
+  font-weight: 600;
+  min-width: 8rem;
+  text-align: center;
+}
