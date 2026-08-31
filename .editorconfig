@@ -87,6 +87,15 @@ dotnet_naming_symbols.miembros_publicos.applicable_accessibilities = *
 dotnet_naming_symbols.campos_privados.applicable_kinds = field
 dotnet_naming_symbols.campos_privados.applicable_accessibilities = private, protected, private_protected
 
+# Campos VISIBLES desde fuera del tipo (internal, public, protected internal). No son
+# estado privado del objeto: son parte de la superficie que otro archivo consume, así que
+# les aplica la regla 4 de SB (propiedades en PascalCase) y no el guion bajo.
+# Sin este grupo, un campo `internal static readonly _codificacion` no lo señalaba nadie:
+# no encajaba en `campos_privados` (por su accesibilidad) ni en `miembros_publicos` (que
+# solo cubre property, method, event y namespace).
+dotnet_naming_symbols.campos_visibles.applicable_kinds = field
+dotnet_naming_symbols.campos_visibles.applicable_accessibilities = internal, public, protected_internal
+
 dotnet_naming_symbols.parametros_y_locales.applicable_kinds = parameter, local, local_function
 dotnet_naming_symbols.parametros_y_locales.applicable_accessibilities = *
 
@@ -112,6 +121,14 @@ dotnet_naming_rule.miembros_en_pascal_case.severity = warning
 dotnet_naming_rule.campos_privados_con_guion_bajo.symbols = campos_privados
 dotnet_naming_rule.campos_privados_con_guion_bajo.style = guion_bajo_camel_case
 dotnet_naming_rule.campos_privados_con_guion_bajo.severity = warning
+
+# Va DESPUÉS de constantes_en_mayuscula a propósito: Roslyn aplica la primera regla que
+# encaja, y una constante `internal` encaja en los dos grupos. Con este orden, una
+# constante sigue exigiendo MAYÚSCULA_CON_GUION_BAJO y solo los campos visibles NO
+# constantes caen aquí.
+dotnet_naming_rule.campos_visibles_en_pascal_case.symbols = campos_visibles
+dotnet_naming_rule.campos_visibles_en_pascal_case.style = pascal_case
+dotnet_naming_rule.campos_visibles_en_pascal_case.severity = warning
 
 dotnet_naming_rule.parametros_y_locales_en_camel_case.symbols = parametros_y_locales
 dotnet_naming_rule.parametros_y_locales_en_camel_case.style = camel_case
@@ -150,3 +167,18 @@ csharp_using_directive_placement = outside_namespace:warning
 # Detecta `using` sobrantes: en este proyecto son la señal temprana de que una capa
 # empezó a depender de otra que no le corresponde.
 dotnet_diagnostic.IDE0005.severity = warning
+
+# ===========================================================================
+# CÓDIGO GENERADO — MIGRACIONES DE EF CORE
+# ===========================================================================
+# Las migraciones las escribe `dotnet ef migrations add`, no una persona. Someterlas a
+# las reglas de estilo produce advertencias que solo se pueden "arreglar" editando a mano
+# un archivo que la herramienta va a volver a generar igual.
+#
+# Se apagan aquí, en una sección con ámbito, y NO con un <NoWarn> del .csproj: así el
+# resto de la capa Infraestructura sigue exigiendo lo mismo que las demás. Se apaga solo
+# IDE0005 —el `using System;` que EF emite y no siempre usa— y ninguna regla de
+# nomenclatura, porque los nombres de las migraciones sí son decisión nuestra.
+[**/Migraciones/*.cs]
+dotnet_diagnostic.IDE0005.severity = none
+generated_code = true

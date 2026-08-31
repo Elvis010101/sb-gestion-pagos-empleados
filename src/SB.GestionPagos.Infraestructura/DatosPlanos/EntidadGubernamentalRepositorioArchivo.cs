@@ -247,7 +247,7 @@ internal sealed class EntidadGubernamentalRepositorioArchivo : IEntidadGubername
 
         string[] lineas = await File.ReadAllLinesAsync(
             _rutaArchivo,
-            FormatoArchivoEntidadesGubernamentales._codificacion,
+            FormatoArchivoEntidadesGubernamentales.Codificacion,
             cancelacion);
 
         List<string> cabecera = new();
@@ -326,7 +326,7 @@ internal sealed class EntidadGubernamentalRepositorioArchivo : IEntidadGubername
         {
             await using (StreamWriter escritor = new(
                 flujo,
-                FormatoArchivoEntidadesGubernamentales._codificacion,
+                FormatoArchivoEntidadesGubernamentales.Codificacion,
                 TAMANO_BUFFER_ESCRITURA,
                 leaveOpen: true))
             {

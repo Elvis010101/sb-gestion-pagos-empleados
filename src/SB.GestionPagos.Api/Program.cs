@@ -19,32 +19,32 @@ try
 {
     Log.Information("Iniciando el host de SB.GestionPagos.");
 
-    WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+    WebApplicationBuilder constructorDeAplicacion = WebApplication.CreateBuilder(args);
 
     // Sustituye el registro por omisión de .NET por Serilog en TODA la aplicación, incluidas
     // las capas que solo conocen ILogger<T>: siguen registrando contra la misma interfaz y
     // sus eventos acaban en la consola y en el archivo sin que ellas se enteren.
-    builder.Host.UseSerilog(ConfiguracionRegistro.Configurar);
+    constructorDeAplicacion.Host.UseSerilog(ConfiguracionRegistro.Configurar);
 
     // El filtro se registra como filtro global: toda acción valida su entrada sin que su autor
     // tenga que acordarse.
-    builder.Services.AddControllers(opciones => opciones.Filters.Add<FiltroValidacion>());
+    constructorDeAplicacion.Services.AddControllers(opciones => opciones.Filters.Add<FiltroValidacion>());
 
-    builder.Services.AgregarContratoDeErrores();
-    builder.Services.AddHealthChecks();
+    constructorDeAplicacion.Services.AgregarContratoDeErrores();
+    constructorDeAplicacion.Services.AddHealthChecks();
 
-    builder.Services.AgregarDocumentacion();
-    builder.Services.AgregarPoliticaDeCors(builder.Configuration);
+    constructorDeAplicacion.Services.AgregarDocumentacion();
+    constructorDeAplicacion.Services.AgregarPoliticaDeCors(constructorDeAplicacion.Configuration);
 
     // Cada capa se registra a sí misma y el host solo las nombra. El orden entre estas cuatro
     // llamadas no importa: el contenedor resuelve las dependencias al construirlas, no al
     // declararlas.
-    builder.Services.AgregarAplicacion();
-    builder.Services.AgregarServicios();
-    builder.Services.AgregarInfraestructura(builder.Configuration);
-    builder.Services.AgregarSeguridad(builder.Configuration);
+    constructorDeAplicacion.Services.AgregarAplicacion();
+    constructorDeAplicacion.Services.AgregarServicios();
+    constructorDeAplicacion.Services.AgregarInfraestructura(constructorDeAplicacion.Configuration);
+    constructorDeAplicacion.Services.AgregarSeguridad(constructorDeAplicacion.Configuration);
 
-    WebApplication app = builder.Build();
+    WebApplication aplicacion = constructorDeAplicacion.Build();
 
     // ------------------------------------------------------------------------------------
     // EL CANAL. El orden de aquí abajo no es cosmético: cada pieza envuelve a las siguientes
@@ -55,21 +55,21 @@ try
     // PRIMERO, siempre. Un middleware solo puede atrapar lo que ocurre por debajo de él.
     // Puesto al final no cubriría nada, y las excepciones de enrutamiento, autenticación o
     // límite de frecuencia saldrían sin registro y sin contrato de error.
-    app.UsarManejoDeExcepciones();
+    aplicacion.UsarManejoDeExcepciones();
 
     // Antes del registro de peticiones: asigna el identificador que después aparece en cada
     // línea del archivo, incluidas las que escriben las capas de más adentro.
-    app.UsarCorrelacion();
+    aplicacion.UsarCorrelacion();
 
-    app.UsarRegistroDePeticiones();
+    aplicacion.UsarRegistroDePeticiones();
 
-    if (app.Environment.IsDevelopment())
+    if (aplicacion.Environment.IsDevelopment())
     {
-        app.UseSwagger();
-        app.UseSwaggerUI();
+        aplicacion.UseSwagger();
+        aplicacion.UseSwaggerUI();
     }
 
-    app.UseHttpsRedirection();
+    aplicacion.UseHttpsRedirection();
 
     //   UseRouting          decide QUÉ endpoint atiende la petición.
     //   UseCors             responde el preflight y corta ahí. Antes del límite de
@@ -79,20 +79,20 @@ try
     //   UseAuthentication   lee la cabecera Authorization y construye el ClaimsPrincipal.
     //   UseAuthorization    decide si ese principal puede entrar. Antes de UseAuthentication
     //                       vería siempre un usuario anónimo y devolvería 401 con token válido.
-    app.UseRouting();
-    app.UseCors(ConfiguracionCors.POLITICA_FRONTEND);
-    app.UseRateLimiter();
-    app.UseAuthentication();
-    app.UseAuthorization();
+    aplicacion.UseRouting();
+    aplicacion.UseCors(ConfiguracionCors.POLITICA_FRONTEND);
+    aplicacion.UseRateLimiter();
+    aplicacion.UseAuthentication();
+    aplicacion.UseAuthorization();
 
-    app.MapControllers();
+    aplicacion.MapControllers();
 
     // AllowAnonymous es imprescindible: la política de reserva del host exige un usuario
     // autenticado en todo endpoint que no diga lo contrario, y una sonda de salud que
     // necesitara credenciales no serviría para lo único que existe.
-    app.MapHealthChecks(RutasDelHost.SALUD).AllowAnonymous();
+    aplicacion.MapHealthChecks(RutasDelHost.SALUD).AllowAnonymous();
 
-    app.Run();
+    aplicacion.Run();
 
     return 0;
 }

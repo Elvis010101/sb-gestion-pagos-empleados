@@ -45,7 +45,7 @@ internal static class FormatoArchivoEntidadesGubernamentales
     /// quedarían pegados al inicio de la primera línea y el analizador JSON fallaría con un
     /// error desconcertante sobre un carácter inesperado en la posición 0.
     /// </remarks>
-    internal static readonly Encoding _codificacion = new UTF8Encoding(encoderShouldEmitUTF8Identifier: false);
+    internal static readonly Encoding Codificacion = new UTF8Encoding(encoderShouldEmitUTF8Identifier: false);
 
     /// <summary>
     /// Codificador que deja los acentos como caracteres literales.
